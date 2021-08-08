@@ -1,11 +1,11 @@
 const mysql = require('mysql');
-const { connect } = require('./routes');
+
 
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: ''
+    database: 'mercado'
 });
 
 connection.connect((err) => {
@@ -15,4 +15,7 @@ connection.connect((err) => {
     } console.log('Connected!');
 });
 
-connection.end();
+module.exports  = connection;
+
+
+

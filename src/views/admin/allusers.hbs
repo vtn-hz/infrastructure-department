@@ -1,0 +1,26 @@
+<h1 style="color: white;">All Users</h1>
+<table style="width: 75%; color: white;">
+    <tr>
+        <td>ID</td>
+        <td>Name</td>
+        <td>Rol</td>
+        <td>Email</td>
+    </tr>
+
+    {{#each rows}}
+    <tr>
+        <td>
+            {{ ID }}
+        </td>
+        <td>
+            {{ Nombre }}
+        </td>
+        <td>
+            {{ Rol }}
+        </td>
+         <td>
+            {{ Email }}
+        </td>
+    </tr>
+    {{/each}}
+</table>

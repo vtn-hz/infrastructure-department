@@ -34,8 +34,12 @@ app.use(session({
 
 // Routes
 app.use(require('./routes/index'));
-app.use(require('./routes/users'));
-app.use(require('./routes/all_requests'));
+// User Routes
+app.use(require('./routes/user/users'));
+app.use(require('./routes/user/all_requests'));
+// Admin Routes
+app.use(require('./routes/admin/admin'));
+
 
 // Static Files
 app.use(express.static(path.join(__dirname, 'public')));
