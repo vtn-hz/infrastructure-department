@@ -12,10 +12,12 @@ require('./database');
 // Setting
 app.set('port', process.env.PORT || 8000);
 app.set('views', path.join(__dirname, 'views'));
+app.set('layouts', path.join(app.get('views'), 'layouts'));
+app.set('partials', path.join(app.get('layouts'), 'partials'));
 app.engine('.hbs', exphbs({
     defaultLayout: 'main',
-    layoutsDir: path.join(app.get('views'), 'layouts'),
-    partialsDir: path.join(app.get('views'), 'partials'),
+    layoutsDir: app.set('layouts'),
+    partialsDir: app.get('partials'),
     extname: '.hbs'
 }));
 app.set('view engine', 'hbs');
@@ -34,8 +36,12 @@ app.use(session({
 
 // Routes
 app.use(require('./routes/index'));
-app.use(require('./routes/users'));
-app.use(require('./routes/all_requests'));
+// User Routes
+app.use(require('./routes/user/users'));
+app.use(require('./routes/user/all_requests'));
+// Admin Routes
+app.use(require('./routes/admin/admin'));
+
 
 // Static Files
 app.use(express.static(path.join(__dirname, 'public')));
