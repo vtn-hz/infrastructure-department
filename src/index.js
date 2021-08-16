@@ -3,6 +3,7 @@ const path = require('path');
 const exphbs = require('express-handlebars');
 const methodOverride = require('method-override');
 const session = require('express-session'); 
+const helpers = require('./helpers/handlebars');
 
 
 // Initiliazations
@@ -12,11 +13,14 @@ require('./database');
 // Setting
 app.set('port', process.env.PORT || 8000);
 app.set('views', path.join(__dirname, 'views'));
+app.set('layouts', path.join(app.get('views'), 'layouts'));
+app.set('partials', path.join(app.get('layouts'), 'partials'));
 app.engine('.hbs', exphbs({
     defaultLayout: 'main',
-    layoutsDir: path.join(app.get('views'), 'layouts'),
-    partialsDir: path.join(app.get('views'), 'partials'),
-    extname: '.hbs'
+    layoutsDir: app.set('layouts'),
+    partialsDir: app.get('partials'),
+    extname: '.hbs',
+    helpers: require('./helpers/handlebars')
 }));
 app.set('view engine', 'hbs');
 
@@ -34,8 +38,12 @@ app.use(session({
 
 // Routes
 app.use(require('./routes/index'));
-app.use(require('./routes/users'));
-app.use(require('./routes/all_requests'));
+// User Routes
+app.use(require('./routes/user/users'));
+// Admin Routes
+app.use(require('./routes/admin/admin'));
+app.use(require('./routes/admin/all_requests'));
+
 
 // Static Files
 app.use(express.static(path.join(__dirname, 'public')));

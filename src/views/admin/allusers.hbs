@@ -1,0 +1,30 @@
+<h1>All Users</h1>
+<table style="width: 50%">
+    <tr>
+        <td>ID</td>
+        <td>Name</td>
+        <td>Rol</td>
+        <td>Email</td>
+        <td>Password</td>
+    </tr>
+
+    {{#each Rows}}
+    <tr>
+        <td>
+            {{ ID }}
+        </td>
+        <td>
+            {{ Nombre }}
+        </td>
+        <td>
+            {{ Rol }}
+        </td>
+         <td>
+            {{ Email }}
+        </td>
+        <td>
+            {{ password }}
+        </td>
+    </tr>
+    {{/each}}
+</table>
