@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-08-2021 a las 01:31:38
+-- Tiempo de generación: 28-08-2021 a las 01:02:24
 -- Versión del servidor: 10.4.14-MariaDB
 -- Versión de PHP: 7.4.10
 
@@ -40,30 +40,13 @@ CREATE TABLE `problems` (
 --
 
 INSERT INTO `problems` (`ID_PROBLEM`, `ID_USER`, `name`, `problem`, `created_at`) VALUES
-(15, NULL, 'aaaaaaaaaaaaaaaaaaaa', ' AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\r\n    NASHEAAAAAAAAEEEE', '2021-08-16 19:57:28'),
+(15, NULL, 'Moned', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r\n         aaaaaaaaaa\r\n    \r\n    \r\n    ', '2021-08-16 19:57:28'),
 (16, NULL, 'Moneda', ' \r\n         No\r\n    \r\n    ', '2021-08-16 20:10:09'),
 (17, NULL, 'membrillo', ' \r\n    sexo', '2021-08-17 19:16:26'),
-(18, NULL, 'aaa', ' \r\n    aaa', '2021-08-17 19:42:11');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `productos`
---
-
-CREATE TABLE `productos` (
-  `Cod_Pro` int(11) NOT NULL,
-  `Nombre` varchar(100) NOT NULL,
-  `Precio` float NOT NULL,
-  `Rubro` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Volcado de datos para la tabla `productos`
---
-
-INSERT INTO `productos` (`Cod_Pro`, `Nombre`, `Precio`, `Rubro`) VALUES
-(1, 'Moneda', 1.05, 1);
+(18, NULL, 'aaa', ' \r\n    aaa', '2021-08-17 19:42:11'),
+(19, 18, 'ProblemaInstaLADA', ' \r\n         \r\n         AAAAAAAAAAA\r\n         aaaaaaaaaa\r\n    \r\n    \r\n    \r\n    ', '2021-08-24 13:49:49'),
+(21, 18, 'ProblemaInstaLADA', ' 11111111111111111111\r\n    ', '2021-08-24 15:20:05'),
+(23, 18, '11111', ' 1111111111\r\n    ', '2021-08-24 15:20:20');
 
 -- --------------------------------------------------------
 
@@ -87,25 +70,6 @@ INSERT INTO `rol` (`ID`, `Nombre`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `rubros`
---
-
-CREATE TABLE `rubros` (
-  `ID` int(11) NOT NULL,
-  `Descripcion` varchar(100) NOT NULL,
-  `Nombre` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Volcado de datos para la tabla `rubros`
---
-
-INSERT INTO `rubros` (`ID`, `Descripcion`, `Nombre`) VALUES
-(1, 'Es un cajero', 'Cajero');
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `users`
 --
 
@@ -122,11 +86,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`ID`, `Nombre`, `Rol`, `Email`, `password`) VALUES
-(10, 'Moneda', 1, 'lolcuenta2000@gmail.com', '$2a$10$IYq6q6FIp8m0DYSNpsYSj.gqPJlxOW7wbtEkygLw5SaUkVnH.Tjvm'),
-(14, 'Moneda', 1, 'lolcuenta@gmail.com', '$2a$10$GDkfe0i8sMjg.EGRH2aRVOe5hQJY4w5Q/o7cVlwoF/kY/gJjlyV56'),
-(15, 'Moneda', 1, 'lolcuena@gmail.com', '$2a$10$LQlJgIRyi7w4hmCoL7Yr5evMzIviJaC7n8IGPHtFk1r2VdjkQj0Vq'),
-(16, 'Moneda', 1, 'locuena@gmail.com', '$2a$10$VSY28Tn42Kvp5mX/C.UNN.ivWKc23wBhjmi/XVjAvzyoxiPoHD.bS'),
-(17, 'Moneda', 1, 'locueAna@gmail.com', '$2a$10$VBuW49ppr/fWS3k2d34yceR5YFxihr6mSNDGJ97BZNmWBp8Rs0R8K');
+(18, 'Valentino', 1, 'n@gmail.com', '$2a$10$jmD5IvdpFotNd5CaqADlh.2yk0DwEb30HhYU21BgoR.IWtFXw5KYW'),
+(19, 'Anashi', 2, 'v@gmail.com', '$2a$10$oN7mtSVeiRRL9spdU1NuzemJJqOTx5KIAhMhgUNuTVZJXaKqGMs8i');
 
 --
 -- Índices para tablas volcadas
@@ -140,22 +101,9 @@ ALTER TABLE `problems`
   ADD KEY `ID_USER` (`ID_USER`);
 
 --
--- Indices de la tabla `productos`
---
-ALTER TABLE `productos`
-  ADD PRIMARY KEY (`Cod_Pro`),
-  ADD KEY `Rubro` (`Rubro`);
-
---
 -- Indices de la tabla `rol`
 --
 ALTER TABLE `rol`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indices de la tabla `rubros`
---
-ALTER TABLE `rubros`
   ADD PRIMARY KEY (`ID`);
 
 --
@@ -174,13 +122,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `problems`
 --
 ALTER TABLE `problems`
-  MODIFY `ID_PROBLEM` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
-
---
--- AUTO_INCREMENT de la tabla `productos`
---
-ALTER TABLE `productos`
-  MODIFY `Cod_Pro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID_PROBLEM` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT de la tabla `rol`
@@ -189,26 +131,14 @@ ALTER TABLE `rol`
   MODIFY `ID` int(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT de la tabla `rubros`
---
-ALTER TABLE `rubros`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Restricciones para tablas volcadas
 --
-
---
--- Filtros para la tabla `productos`
---
-ALTER TABLE `productos`
-  ADD CONSTRAINT `productos_ibfk_1` FOREIGN KEY (`Rubro`) REFERENCES `rubros` (`ID`);
 
 --
 -- Filtros para la tabla `users`
