@@ -1,0 +1,10 @@
+<h2>EDITA</h2>
+<form action="/edit/petition/{{ID_PROBLEM}}" method="POST">
+    <label>NOMBRE: </label> <input type="text" name="name" id="name" value="{{name}}" required><br>
+    <br>
+    <label>PROBLEMATICA: </label><br> 
+    <textarea name="problem" placeholder="problematica"> 
+        {{problem}}
+    </textarea>
+    <br><input type="submit" value="ENVIAR">
+</form> 

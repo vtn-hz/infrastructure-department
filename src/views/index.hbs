@@ -1,0 +1,20 @@
+<h1>Index</h1><br>
+{{#if user}}
+    {{#if (isVip user.Rol)}}
+        <h1>User Vip</h1><br>
+        <a href="/about">About</a> <a href="/allusers/">All Users</a>
+        <br>
+
+    {{else}}
+        <h1>User Normal</h1><br>
+        <a href="/about">About</a>
+        <br>
+    {{/if}}
+{{else}}
+    <h1>Registrate para poder enviarnos peticiones!</h1>
+    <h1>Cuenta Normal: n@gmail.com / 1234</h1>
+    <h1>Cuenta Vip: v@gmail.com / 1234</h1>
+{{/if}}
+
+ 
+
