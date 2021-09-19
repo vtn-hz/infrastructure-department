@@ -1,0 +1,21 @@
+<h1>Index</h1><br>
+{{#if user}}
+    {{#if (isVip user.ID_ROL)}}
+        <h1>User Vip</h1><br>
+        <a href="/about">About</a> <a href="/allusers/">All Users</a>
+        <br>
+        <a href="/allcontratista">Listra de Contratistas</a> <a href="/allusers/">All Users</a>
+
+    {{else}}
+        <h1>User Normal</h1><br>
+        <a href="/about">About</a>
+        <br>
+    {{/if}}
+{{else}}
+    <h1>LOGIN "EXAMPLE"</h1><br>
+    <h1>Prueb</h1><br>
+    <h1>1234</h1>
+{{/if}}
+
+ 
+
