@@ -1,0 +1,28 @@
+<h1>Todos los contratistas</h1> <a href="/add/contratista" style="color: green;">Agregar</a><br/>
+<table style="width: 50%">
+    <tr>
+        <td>Nombre</td>
+        <td>CUIT</td>
+        <td>Fecha</td>
+        <td>Operaciones</td>
+    </tr>
+    {{#each array_ID}}
+    <tr>
+        <td>
+            {{ name }}
+        </td>
+        <td>
+            {{ CUIT }}
+        </td>
+        <td>
+            {{ toFormat fecha_certificacion }}
+        </td>
+        <td>
+            <a href="/delete/contratista/{{ID_CONT}}" style="color: red;">Eliminar</a><br/>
+            <a href="/edit/contratista/{{ID_CONT}}" style="color:slateblue;">Editar</a>
+        </td>
+    </tr>
+    {{else}}
+    <h1>No tiene mas conctratistas!</h1><br>
+    {{/each}}
+</table> 

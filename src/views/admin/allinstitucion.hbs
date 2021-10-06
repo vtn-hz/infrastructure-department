@@ -1,0 +1,36 @@
+<h1>Todos las escuelas</h1> <a href="/add/institucion" style="color: green;">Agregar</a><br/> <a href="/add/encargado" style="color: green;">Agregar Director/Inspector</a>
+<table style="width: 50%">
+    <tr>
+        <td>CUE</td>
+        <td>ID_EST</td>
+        <td>Nombre</td>
+        <td>Director</td>
+        <td>Inspector</td>
+        <td>Operaciones</td>
+    </tr>
+    {{#each array_ID}}
+    <tr>
+        <td>
+            {{ CUE }}
+        </td>
+        <td>
+            {{ ID_EST }}
+        </td>
+        <td>
+            {{ nombre_establecimiento }}
+        </td>
+        <td>
+            {{ nombre_director }}
+        </td>
+        <td>
+            {{ nombre_inspector }}
+        </td>
+        <td>
+            <a href="/delete/institucion/{{ID_EST}}" style="color: red;">Eliminar</a><br/>
+            <a href="/edit/institucion/{{ID_EST}}" style="color:slateblue;">Editar</a>
+        </td>
+    </tr>
+    {{else}}
+    <h1>No tiene mas conctratistas!</h1><br>
+    {{/each}}
+</table> 
