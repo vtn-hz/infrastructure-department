@@ -1,0 +1,76 @@
+<h2>INGRESE</h2> 
+<form action="/add/expediente" method="POST">
+    <label>Fecha del Expediente </label><input type="date" value="{{timenow}}" name="fecha_pedido" required> <label> Posponer a </label><input type="date" name="postpone_date">
+    <br>
+    <label>Fecha del Contrato </label><input type="date" value="{{timenow}}" name="fecha_contrato" required> <label> Fecha de Garantia </label><input type="date" name="fecha_garantia">
+    <br>
+    <br>
+
+     <label>Oficina: </label><select name="ID_OFICINA" id="ID_OFICINA" required>
+        {{#each oficina}}
+            <option value="{{ID_OFICINA}}">{{tipo}}</option>                                                                                                                                  
+        {{/each}}
+            <option value="otro">Otro</option>
+    </select> 
+    <input placeholder="Otro..." name="otra_oficina">    
+    
+    <br><br>
+
+    <table>
+        <tr>
+            <td>
+                 <label>Informe Tecnico: </label>
+            </td>
+            <td>
+                 <label>Obra realizada: </label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <textarea name="informe_tecnico">                                                                                                               
+
+                </textarea>
+            </td>
+            <td>
+                <textarea name="obra_realizada" required>                                                                                                               
+
+                </textarea>
+            </td>
+        </tr>
+    </table>
+    <br><br>
+    <label>Contratación:</label><br>
+    <input type="radio" value="1" name="ID_CONTRATACION" required> Directa
+    <input type="radio" value="2" name="ID_CONTRATACION"> A Cotizar
+    <br><br>
+    <label>Fondo:</label><br>
+    <input type="radio" value="1" name="ID_FONDO" required> Cuff
+    <input type="radio" value="2" name="ID_FONDO"> Compensador
+    <input type="radio" value="3" name="ID_FONDO"> Otro
+    <br><br>
+
+    <label>Monto: </label><input type="number" name="monto_numeros" placeholder="Monto en Números" required>
+    <br><br>    
+    <label>Institución:</label>
+    <select name="inst" id="inst">
+        {{#each inst}}
+        <option value="{{CUE}}###{{ID_EST}}">{{nombre_establecimiento}}</option>
+        {{/each}}
+    </select>
+
+    <br><br>
+    <label>Contratista:</label>
+    <select name="contratista" id="contratista" required>
+        {{#each contratista}}
+        <option value="{{ID_CONT}}">{{cont_name}}</option>
+        {{/each}}
+    </select>
+    <input type="number" name="presupuesto_entregado" placeholder="Presupuesto Entregado" required>
+
+    <br><br><select name="ID_ESTADO" id="ID_ESTADO" required>
+        <option value="1">En Cotización</option>
+        <option value="2">En Proceso</option>
+        <option value="3">Finalizada</option>
+        <option value="4">Sin Asignar</option>
+    </select> <input type="submit" value="ENVIAR">
+</form> 

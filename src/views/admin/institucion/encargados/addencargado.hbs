@@ -1,0 +1,17 @@
+<h2>INGRESE</h2>
+<form action="/add/encargado" method="POST">
+    <label for="TIPO">Nivel/Modalidad: </label>
+    <input type="radio" id="director" name="TIPO" value="1" required> <label>Director/a</label>
+    <input type="radio" id="inspector" name="TIPO" value="2"> <label>Inspector</label>
+    <br>
+
+    <label>Nombre: </label> <input type="text" name="nombre" id="nombre" required>
+    <label>Apellido: </label> <input type="text" name="apellido" id="apellido" required>
+    <br><br>
+
+
+    <input  name="telefono"  type="number" placeholder="Telefono">
+    <input  name="email"  type="email" placeholder="Email">
+
+    <br><br><input type="submit" value="ENVIAR">
+</form>  

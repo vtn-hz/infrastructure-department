@@ -1,0 +1,36 @@
+<h1>All Petitions</h1>
+<table style="width: 50%">
+    <tr>
+        <td>Hour</td>
+        <td>ID_USER</td>
+        <td>Name</td>
+        <td>Problem</td>
+        <td>Operaciones</td>
+    </tr>
+
+    {{#each problems}}
+    <tr>
+        <td>
+            {{ timeago created_at }}
+        </td>
+        <td>
+            {{ ID_USER }}
+        </td>
+        <td>
+            {{ name }}
+        </td>
+         <td>
+            <textarea maxlength="10" disabled>
+                {{ problem }}
+            </textarea>
+        </td>
+        <td>
+            <a href="/delete/petition/{{ID_PROBLEM}}" style="color: red;">Eliminar</a><br/>
+            <a href="/edit/petition/{{ID_PROBLEM}}" style="color:slateblue;">Editar</a>
+        </td>
+    </tr>
+    {{else}}
+    <h1>No tiene peticiones...</h1><br>
+    <a href="/add/petition">Si tiene algun problema envie una!</a>
+    {{/each}}
+</table> 

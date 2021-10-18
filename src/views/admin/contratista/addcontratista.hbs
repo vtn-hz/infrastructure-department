@@ -1,0 +1,27 @@
+<h2>INGRESE</h2>
+<form action="/add/contratista" method="POST">
+    <label>Nombre: </label> <input type="text" name="nombre" id="name" required>
+    <label>Apellido: </label> <input type="text" name="apellido" id="apellido" required><br>
+    <input name="CUIT" id="CUIT" placeholder="CUIT"> <label>Fecha Certificacion: </label><input type="date" name="fecha_certificacion" id="fecha_certificacion">
+    <br><br>
+    <label>Direccion: </label> <input placeholder="Calle" name="nmb_calle" id="nmb_calle"> <input placeholder="Nro" type="number" name="nro_calle" id="nro_calle">
+    <br>
+    <input type="radio" id="mdp" name="LOCALIDAD" value="1" required> <label>Mar del Plata</label>
+    <input type="radio" id="batan" name="LOCALIDAD" value="2"> <label>Batan</label>
+    <input type="radio" id="santaclara" name="LOCALIDAD" value="3"> <label>Santa Clara</label>
+    <br><br>
+    <label>Email: </label><input placeholder="Email" type="email" name="email_a" required> <input placeholder="Email Opcional" type="email" name="email_b">
+    <br>
+    <label>Numero de Telefono: </label><input placeholder="Telefono" type="number" name="telefono_a" required> <input placeholder="Telefono Opcional" type="number" name="telefono_b">
+
+    <br><br>
+    <label>Nombre Completo del Representante: </label> <input placeholder="Nombre" type="text" name="nombre_repre" id="nombre_repre"> <input placeholder="Apellido" type="text" name="apellido_repre" id="apellido_repre">
+    <br><br>
+
+    <h5>Rubros: </h5>
+    <input type="checkbox" name="rubro" value="1"> <label>Calderas </label> <input type="checkbox" name="rubro" value="2"> <label>Calderas </label> <input type="checkbox" name="rubro" value="3"><label> Calefacción</label> <input type="checkbox" name="rubro" value="4"><label> Carpintería</label><br>
+    <input type="checkbox" name="rubro" value="5"> <label>Cerrajería </label> <input type="checkbox" name="rubro" value="6"> <label>Instalación Eléctrica </label> <input type="checkbox" name="rubro" value="7"><label> Instalación de Gas</label> <input type="checkbox" name="rubro" value="8"><label> Instalación Sanitaria</label><br>
+    <input type="checkbox" name="rubro" value="9"> <label>Herrería </label> <input type="checkbox" name="rubro" value="10"> <label>Pintura </label> <input type="checkbox" name="rubro" value="11"><label> Techos</label> <input type="checkbox" name="rubro" value="12"><label> Vidrios</label> <input type="checkbox" name="rubro" value="13"> <label>Yesería </label> <br>
+
+    <br><br><input type="submit" value="ENVIAR">
+</form> 

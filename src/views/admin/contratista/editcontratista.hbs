@@ -1,0 +1,29 @@
+<h2>INGRESE</h2>
+<form action="/edit/contratista/{{ID_CONT}}" method="POST">
+    <label>Nombre: </label> <input type="text" value="{{nombre}}" name="nombre" id="nombre" required>
+    <label>Apellido: </label> <input type="text" value="{{apellido}}" name="apellido" id="apellido" required><br>
+    <input name="CUIT" id="CUIT" placeholder="CUIT" value="{{CUIT}}" > <label>Fecha Certificacion: </label><input type="date" name="fecha_certificacion" id="fecha_certificacion" value="{{toFormatDef fecha_certificacion}}">
+    <br><br>
+    <label>Direccion: </label> <input placeholder="Calle" name="nmb_calle" id="nmb_calle" value="{{nmb_calle}}"> <input placeholder="Nro" type="number" name="nro_calle" id="nro_calle" value="{{nro_calle}}">
+    <br>
+    <input type="radio" id="mdp" name="LOCALIDAD" value="1" required {{checkornot 1 localidad }}> <label>Mar del Plata</label>
+    <input type="radio" id="batan" name="LOCALIDAD" value="2" {{checkornot 2 localidad }}> <label>Batan</label>
+    <input type="radio" id="santaclara" name="LOCALIDAD" value="3" {{checkornot 3 localidad }}> <label>Santa Clara</label>
+    <br><br>
+    <label>Email: </label><input placeholder="Email" type="email" name="email_a" value="{{email1}}" required>   <input name="email_1" type="hidden" value={{email_1}}> 
+     <input placeholder="Email Opcional" type="email" name="email_b" value="{{email2}}">                        <input name="email_2" type="hidden" value={{email_2}}> 
+    <br>
+    <label>Numero de Telefono: </label><input placeholder="Telefono" type="number" name="telefono_a" value="{{tel1}}" required> <input name="tel_1" type="hidden" value={{tel_1}}> 
+    <input placeholder="Telefono Opcional" type="number" name="telefono_b" value="{{tel2}}">                                    <input name="tel_2" type="hidden" value={{tel_2}}>
+
+    <br><br>
+    <label>Nombre Completo del Representante: </label> <input placeholder="Nombre" type="text" value="{{nombre_repre}}" name="nombre_repre" id="nombre_repre" required> <input placeholder="Apellido" type="text" value="{{apellido_repre}}" name="apellido_repre" id="apellido" required>
+    <br><br>
+
+    <h5>Rubros: </h5>
+    <input type="checkbox" name="rubro" value="1" {{checkornot 1 rubro }}> <label>Albañileria </label> <input type="checkbox" name="rubro" value="2" {{checkornot 2 rubro }}> <label>Calderas </label> <input type="checkbox" name="rubro" value="3" {{checkornot 3 rubro }}><label> Calefacción</label> <input type="checkbox" name="rubro" value="4" {{checkornot 4 rubro }}><label> Carpintería</label><br>
+    <input type="checkbox" name="rubro" value="5" {{checkornot 5 rubro }}> <label>Cerrajería </label> <input type="checkbox" name="rubro" value="6" {{checkornot 6 rubro }}> <label>Instalación Eléctrica </label> <input type="checkbox" name="rubro" value="7" {{checkornot 7 rubro }}><label> Instalación de Gas</label> <input type="checkbox" name="rubro" value="8" {{checkornot 8 rubro }}><label> Instalación Sanitaria</label><br>
+    <input type="checkbox" name="rubro" value="9" {{checkornot 9 rubro }}> <label>Herrería </label> <input type="checkbox" name="rubro" value="10" {{checkornot 10 rubro }}> <label>Pintura </label> <input type="checkbox" name="rubro" value="11" {{checkornot 11 rubro }}><label> Techos</label> <input type="checkbox" name="rubro" value="12" {{checkornot 12 rubro }}><label> Vidrios</label> <input type="checkbox" name="rubro" value="13" {{checkornot 13 rubro }}> <label>Yesería </label> <br>
+
+    <br><br><input type="submit" value="Editar">
+</form>  
