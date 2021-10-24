@@ -64,6 +64,7 @@ helpers.checkornot = (value, inelement) => {
 }
 
 helpers.selectedornot = (value, inelement) => {
+    console.log(value+" "+inelement);
     if(inelement === undefined){
         return "";
     }else{

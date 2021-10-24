@@ -1,7 +1,7 @@
 # Bienvenido!
 
 
-## Este es un proyecto para el Departamento de Infraestructura 
+## Este es un proyecto para el Departamente de Infraestructura 
 #### https://github.com/Gallego54/infrastructure-department
 
 

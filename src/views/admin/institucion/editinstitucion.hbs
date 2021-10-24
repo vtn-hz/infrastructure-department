@@ -1,5 +1,5 @@
 <h2>INGRESE</h2>
-<form action="/add/institucion" method="POST">
+<form action="/edit/institucion/{{institucion.CUE}}/{{institucion.ID_EST}}" method="POST">
     <label for="NAME">Nivel/Modalidad: </label>
     <input type="radio" id="jardin" name="NIVEL" value="1" required {{checkornot 1 institucion.ID_MODALIDAD}}> <label>Jardin</label>
     <input type="radio" id="primaria" name="NIVEL" value="2" {{checkornot 2 institucion.ID_MODALIDAD}}> <label>Escuela Primaria</label>
@@ -27,7 +27,7 @@
     <select name="directores" id="directores">
         <option selected disabled>Escoja Director</option>
         {{#each directores}}
-        <option value="{{ID_ENCARGADO}}" {{selectedornot ID_ENCARGADO ../institucion.0.ID_ENCARGADO}}>{{nombre}} {{apellido}}</option>
+        <option value="{{ID_ENCARGADO}}" {{selectedornot ID_ENCARGADO ../institucion.0.ID_ENCARGADO}}  {{selectedornot ID_ENCARGADO ../institucion.1.ID_ENCARGADO}}>{{nombre}} {{apellido}}</option>
         {{/each}}
     </select>
     <input value="" disabled placeholder="Telefono">
@@ -38,7 +38,7 @@
     <select name="inspectores" id="inspectores">
         <option selected disabled>Escoja Inspector</option>
         {{#each inspectores}}
-        <option value="{{ID_ENCARGADO}}" {{selectedornot ID_ENCARGADO ../institucion.1.ID_ENCARGADO}}>{{nombre}} {{apellido }}</option>
+        <option value="{{ID_ENCARGADO}}" {{selectedornot ID_ENCARGADO ../institucion.0.ID_ENCARGADO}}  {{selectedornot ID_ENCARGADO ../institucion.1.ID_ENCARGADO}}>{{nombre}} {{apellido }}</option>
         {{/each}}
     </select>
     <input value="" disabled placeholder="Telefono">
