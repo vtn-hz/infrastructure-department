@@ -53,7 +53,7 @@ app.use((Req, Res, Next) =>{
 app.use(require('./routes/index'));
 app.use(require('./routes/auth'));
 // User Routes
-app.use(require('./routes/user/users'));
+//app.use(require('./routes/user/users'));
 // Admin Routes
 app.use(require('./routes/admin/admin'));
 

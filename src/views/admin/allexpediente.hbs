@@ -1,0 +1,61 @@
+<h1>Todos los expedientes</h1> <a href="/add/expediente" style="color: green;">Agregar</a><br/>
+<table style="width: 100%">
+    <tr>
+        <td>NRO_EXP</td>
+        <td>NRO_ORDEN</td>
+        <td>Fecha</td>
+        <td>|||</td>
+        <td>CUE institucion</td>
+        <td>ESCUELA COD</td>
+        <td>|||</td>
+        <td>Monto</td>
+        <td>Letras</td>
+        <td>Fecha Contrato</td>
+        <td>|||</td>
+        <td>Contratista</td>
+        <td>Presupuesto</td>
+        <td>Fecha Certificacion</td>
+    </tr>
+    {{#each expedientes}}
+    <tr>
+        <td>
+            {{ ID_EXP }}
+        </td>
+        <td>
+            {{ ID_NRORD }}
+        </td>
+        <td>
+            {{ toFormat fecha_pedido }}
+        </td>
+        <td>|||</td>
+        <td>
+            {{ CUE }}
+        </td>
+        <td>
+            {{ ID_EST }}
+        </td>
+        <td>|||</td>
+        <td>
+            {{ monto_numeros }}
+        </td>
+        <td>
+            {{ numtolet monto_numeros }}
+        </td>
+        <td>
+            {{ toFormat fecha_contrato }}
+        </td>
+        <td>|||</td>
+        <td>
+            {{nombre}} {{apellido}}
+        </td>
+        <td>
+            {{ presupuesto_entregado }}
+        </td>
+        <td>
+            {{ toFormat fecha_certificacion }}
+        </td>
+    </tr>
+    {{else}}
+    <h1>No tiene mas instituciones</h1><br>
+    {{/each}}
+</table> 

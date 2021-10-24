@@ -1,4 +1,5 @@
 const { format } = require('timeago.js');
+const num_let = require('jc_numeros_letras');
 
 const helpers = {};
 
@@ -31,6 +32,23 @@ helpers.toFormat =  (date) => {
     return day + "/" + month + "/" + year;
 }
 
+helpers.toFormatDef =  (date) => {
+    let day = date.getDate();
+    let month = date.getMonth()+1;
+    let year = date.getFullYear();
+
+
+    if(day<10){
+        day = "0" + day;
+    }
+
+    if(month<10){
+        month = "0" + month;
+    }
+    
+    return year + "-" + month + "-" + day;
+}
+
 helpers.checkornot = (value, inelement) => {
     if(inelement instanceof Array){
         if(inelement.includes(value)){
@@ -44,5 +62,47 @@ helpers.checkornot = (value, inelement) => {
         return "";
     }
 }
+
+helpers.selectedornot = (value, inelement) => {
+    if(inelement === undefined){
+        return "";
+    }else{
+        if(inelement instanceof Array){
+            if(inelement.includes(value)){
+                return "selected";
+            }
+            return "";
+        }else{
+            if(value === inelement){
+                return "selected";
+            }
+            return "";
+        }
+    }
+}
+
+helpers.timenow = () => {
+    let date_ob = new Date(Date.now());
+    let d = date_ob.getDate();
+    let m = date_ob.getMonth() + 1;
+    let y = date_ob.getFullYear();
+
+
+    if(d<10){
+        d = "0" + d;
+    }
+
+    if(m<10){
+        m = "0" + m;
+    }
+
+
+    return y + "-" + m + "-" + d;
+}
+
+helpers.numtolet = (num) => {
+    return num_let.numeros_letras(num);
+}
+
 
 module.exports = helpers;       

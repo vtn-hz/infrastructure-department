@@ -8,7 +8,7 @@
         <td>Inspector</td>
         <td>Operaciones</td>
     </tr>
-    {{#each array_ID}}
+    {{#each ints}}
     <tr>
         <td>
             {{ CUE }}
@@ -27,10 +27,10 @@
         </td>
         <td>
             <a href="/delete/institucion/{{ID_EST}}" style="color: red;">Eliminar</a><br/>
-            <a href="/edit/institucion/{{ID_EST}}" style="color:slateblue;">Editar</a>
+            <a href="/edit/institucion/{{CUE}}/{{ID_EST}}" style="color:slateblue;">Editar</a>
         </td>
     </tr>
     {{else}}
-    <h1>No tiene mas conctratistas!</h1><br>
+    <h1>No tiene mas instituciones</h1><br>
     {{/each}}
 </table> 

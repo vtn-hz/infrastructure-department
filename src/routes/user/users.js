@@ -1,4 +1,4 @@
-const express = require('express');
+/*const express = require('express');
 const router = express.Router();
 const  { isLoggedIn, isNorm } = require('../../helpers/isauth');
 const pool = require('../../database');
@@ -75,4 +75,11 @@ router.post('/edit/petition/:id', isLoggedIn, isNorm, async (Req, Res)=>{
 });
 
 
-module.exports = router;
+module.exports = router;*/
+
+/*
+    Esto era funcional cuando se creia que era un sistema comunicacional,
+     de todos modos no borrar por el hecho de una proxima
+    evolución de este sistema. 
+    Att: Valentino Hernamdez
+*/

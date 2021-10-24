@@ -11,8 +11,6 @@ passport.use('local.signin', new LocalStrategy({
     const rows = await pool.query('SELECT * FROM user WHERE nombre = ?', [username]);
     if(rows.length > 0){
         const user = rows[0];
-        console.log(user.password);
-        console.log(password);
         const validPassword = await encdec.matchPassword(password, user.password);
         if(validPassword){
             done(null, user, Req.flash('success', 'Welcome '+ user.nombre));
