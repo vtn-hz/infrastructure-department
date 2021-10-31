@@ -28,7 +28,7 @@
     <label>Director:</label>
     <select name="directores" id="directores">
         <option selected disabled>Escoja Director</option>
-        {{#each directores}}
+        {{#each director}}
         <option value="{{ID_ENCARGADO}}">{{nombre}} {{apellido }}</option>
         {{/each}}
     </select>
@@ -39,7 +39,7 @@
     <label>Inspector:</label>
     <select name="inspectores" id="inspectores">
         <option selected disabled>Escoja Director</option>
-        {{#each inspectores}}
+        {{#each inspector}}
         <option value="{{ID_ENCARGADO}}">{{nombre}} {{apellido }}</option>
         {{/each}}
     </select>

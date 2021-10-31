@@ -11,30 +11,23 @@ router.get('/allcontratista/', /*isauth.isLoggedIn, isauth.isVip,*/ async (Req, 
         } else {
             if(results.length){
                 const array_ID = results;
-                var size = array_ID.length-1;
-                var array_Names = [];
-    
+                const Promises  = [];
     
                 array_ID.forEach((item, index) => {
-                    pool.query('SELECT * FROM contratista_nombre WHERE ID_CONTN = ?', [item.ID_CONTN], async (error, results) => {
+                    Promises.push ( new Promise ((Resolve, Reject) => { pool.query('SELECT * FROM contratista_nombre WHERE ID_CONTN = ?', [item.ID_CONTN], async (error, results) => {
                         if (error) {
-                            throw error;
+                            Reject (error);
                         } else {
-                            if(results.length){
-                                let name = results[0].nombre + ' ' + results[0].apellido;
-                                array_ID[index].name = name;
-                            }else{
-                                let name = '';
-                                array_ID[index].name = name;
-                            }
-    
-                            if(size === index){
-                                //console.log(array_ID);
-                                return Res.render('admin/allcontratistas', {array_ID, array_Names});
-                            }
+                            Object.assign(item, results[0]);
+                            Resolve(item);
                         }
-                    });
+                    })}) );
                 });
+
+                Promise.all (Promises).then((names => {
+                    Res.render('admin/allcontratistas',{array_ID: names});
+                }))
+
             }else{
                 Res.render('admin/allcontratistas');
             }
@@ -49,47 +42,153 @@ router.get('/add/contratista', /*isauth.isLoggedIn, isauth.isVip,*/ (Req, Res) =
 });
 
 router.post('/add/contratista', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, Res) => {
-    const ID_NAME = await pool.query('INSERT INTO contratista_nombre (nombre, apellido) VALUES (?, ?)', [Req.body.nombre, Req.body.apellido]);
-    const ID_REPR = (Req.body.nombre_repre && Req.body.apellido_repre)? await pool.query('INSERT INTO representante (nombre, apellido) VALUES (?, ?)', [Req.body.nombre_repre, Req.body.apellido_repre]) : null;
+    const promises  = [
+        new Promise ((Resolve, Reject) => { pool.query('INSERT INTO contratista_nombre (nombre, apellido) VALUES (?, ?)', [Req.body.nombre, Req.body.apellido], (error, results) => {
+            if (error) {
+                Reject ( error );
+            } else {
+                Resolve ( results.insertId ) ; 
+            }
+        })}),
 
-    const CONT = {
-        ID_CONTN: ID_NAME.insertId,
-        CUIT: Req.body.CUIT,
-        fecha_certificacion:Req.body.fecha_certificacion,
-        ID_REPR: (ID_REPR)? ID_REPR.insertId : ID_REPR
-    }
+        (Req.body.nombre_repre && Req.body.apellido_repre)? new Promise ((Resolve, Reject) => { pool.query('INSERT INTO representante (nombre, apellido) VALUES (?, ?)', [Req.body.nombre_repre, Req.body.apellido_repre], (error, results) => {
+            if (error) {
+                Reject ( error );
+            }else{
+                Resolve (results.insertId) ;
+            } 
+        })}) 
+        : new Promise ((Resolve, Reject) => {
+            Resolve (null) ;
+        }),
 
-    const ID_CONT = await pool.query('INSERT INTO contratista SET ?', [CONT]);
+        // Calle
+        new Promise ((Resolve, Reject) => { pool.query('INSERT INTO domicilio (ID_LOCALIDAD, nmb_calle, nro_calle) VALUES (?, ?, ?)', [Req.body.LOCALIDAD, Req.body.nmb_calle, Req.body.nro_calle], (error, results) => {
+            if (error) {
+                Reject (error) ;
+            } else {
+                Resolve (results.insertId) ;
+            }
+        })}),
+
+        // Email 
+        new Promise ((Resolve, Reject) => { pool.query('INSERT INTO email (email) VALUES (?)', [Req.body.email_a], (error, results) => {
+            if (error) {
+                Reject (error) ;
+            } else {
+                Resolve (results.insertId) ;
+            }
+        })}),
+
+        (Req.body.email_b)?  new Promise ((Resolve, Reject) => { pool.query('INSERT INTO email (email) VALUES (?)', [Req.body.email_b], (error, results) =>  {
+            if (error) {
+                Reject (error) ;
+            } else {
+                Resolve (results.insertId) ;
+            }
+
+        })}) 
+        : new Promise ((Resolve, Reject) => {
+            Resolve (null) ;
+        }),
+
+        // Telefono
+        new Promise ((Resolve, Reject) => { pool.query('INSERT INTO telefono (telefono) VALUES (?)', [Req.body.telefono_a], (error, results) => {
+            if (error) {
+                Reject (error) ;
+            } else {
+                Resolve (results.insertId) ;
+            }
+        })}),
+
+        (Req.body.telefono_b)? new Promise ((Resolve, Reject) => { pool.query('INSERT INTO telefono (telefono) VALUES (?)', [Req.body.telefono_b], (error, results) => {
+            if (error) {
+                Reject (error) ;
+            } else {
+                Resolve (results.insertId) ;
+            }
+        })}) 
+        :  new Promise ((Resolve, Reject) => {
+            Resolve (null) ;
+        }),
+        
+       
+    ];
+
+    Promise.all(promises).then(IDS => {
+        const CONT = {
+            ID_CONTN: IDS[0],
+            CUIT: Req.body.CUIT,
+            fecha_certificacion:Req.body.fecha_certificacion,
+            ID_REPR: IDS[1]
+        }
+    
+        pool.query('INSERT INTO contratista SET ?', [CONT], (error, results) => {
+            if (error) {
+                throw error;
+            } else {
+                pool.query('INSERT INTO contratista_domicilio (ID_DOM, ID_CONT) VALUES (?, ?)', [IDS[2], results.insertId]);
 
 
-   const ID_DOM = await pool.query('INSERT INTO domicilio (ID_LOCALIDAD, nmb_calle, nro_calle) VALUES (?, ?, ?)', [Req.body.LOCALIDAD, Req.body.nmb_calle, Req.body.nro_calle]);
-    pool.query('INSERT INTO contratista_domicilio (ID_DOM, ID_CONT) VALUES (?, ?)', [ID_DOM.insertId, ID_CONT.insertId]);
+                pool.query('INSERT INTO con_email (ID_CONT, ID_EMAIL) VALUES (?, ?)', [results.insertId, IDS[3]]);
+                if(IDS[4]){ pool.query('INSERT INTO con_email (ID_CONT, ID_EMAIL) VALUES (?, ?)', [results.insertId, IDS[4]]); }
+            
+                
+                pool.query('INSERT INTO contratista_telefono (ID_CONT, ID_TEL) VALUES (?, ?)', [results.insertId, IDS[5]]);
+                if(IDS[6]){ pool.query('INSERT INTO contratista_telefono (ID_CONT, ID_TEL) VALUES (?, ?)', [results.insertId, IDS[6]]); }
 
-
-    const EMAIL_1 = await pool.query('INSERT INTO email (email) VALUES (?)', [Req.body.email_a]);
-    const EMAIL_2 = (Req.body.email_b)? await pool.query('INSERT INTO email (email) VALUES (?)', [Req.body.email_b]) : null;
-    pool.query('INSERT INTO con_email (ID_CONT, ID_EMAIL) VALUES (?, ?)', [ID_CONT.insertId, EMAIL_1.insertId]);
-    if(EMAIL_2){ pool.query('INSERT INTO con_email (ID_CONT, ID_EMAIL) VALUES (?, ?)', [ID_CONT.insertId, EMAIL_2.insertId]); }
-
-    const TEL_1 = await pool.query('INSERT INTO telefono (telefono) VALUES (?)', [Req.body.telefono_a]);
-    const TEL_2 = (Req.body.telefono_b)? await pool.query('INSERT INTO telefono (telefono) VALUES (?)', [Req.body.telefono_b]) : null;
-    pool.query('INSERT INTO contratista_telefono (ID_CONT, ID_TEL) VALUES (?, ?)', [ID_CONT.insertId, TEL_1.insertId]);
-    if(TEL_2){ pool.query('INSERT INTO contratista_telefono (ID_CONT, ID_TEL) VALUES (?, ?)', [ID_CONT.insertId, TEL_2.insertId]); }
-
-    const Rubros = Req.body.rubro;
-
-    if(Rubros instanceof Array){
-        Rubros.forEach(element => {
-            pool.query('INSERT INTO con_rub (CONT_RUB, ID_RUBRO, ID_CONT) VALUES (?, ?, ?)', [ID_CONT.insertId+"/"+element, element, ID_CONT.insertId]);
+                new Promise ((Resolve, Reject) => {
+                    if (Req.body.rubro != undefined) {
+                        const Rubros = Req.body.rubro;
+                        const Micro = [];
+                        if(Rubros instanceof Array){
+                            Rubros.forEach(element => {
+                                Micro.push ( new Promise ((Resolve, Reject) => { pool.query('INSERT INTO con_rub (CONT_RUB, ID_RUBRO, ID_CONT) VALUES (?, ?, ?)', [results.insertId+"/"+element, element, results.insertId], (error) => {
+                                        if (error) {
+                                            Reject (error) ;
+                                        }else{
+                                            Resolve () ;
+                                        }
+                                    })})
+                                );
+                            });
+                        }else{
+                            Micro.push ( new Promise ((Resolve, Reject) => { pool.query('INSERT INTO con_rub (CONT_RUB, ID_RUBRO, ID_CONT) VALUES (?, ?, ?)', [results.insertId+"/"+Rubros, Rubros, results.insertId], (error) => {
+                                if (error) {
+                                    Reject (error) ;
+                                } else {
+                                    Resolve () ;
+                                }
+                            })}) 
+                            );
+                        }
+        
+                        Promise.all (Micro) . then (Resolve());
+                    }else{ 
+                        Resolve (null) ;
+                    }
+                }).then(() => {
+                    Req.flash('success', 'Se registró el contratista correctamente!');
+                    Res.redirect('/allcontratista/');
+                });
+            }
         });
-    }else{
-        pool.query('INSERT INTO con_rub (CONT_RUB, ID_RUBRO, ID_CONT) VALUES (?, ?, ?)', [ID_CONT.insertId+"/"+Rubros, Rubros, ID_CONT.insertId]);
-    }
+    })
+   
 
+
+
+
+
+
+
+    
+  
+
+    
 
      
-    Req.flash('success', 'Se registró el contratista correctamente!');
-    Res.redirect('/allcontratista/');
+  
   
 });
 

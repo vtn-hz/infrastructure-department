@@ -80,6 +80,17 @@ router.get('/allexpediente/',  /*isauth.isLoggedIn, isauth.isVip,*/ async (Req, 
       })
     );
 
+    promises.push ( new Promise ((resolve, reject) => {
+        pool.query ('SELECT * FROM nro_orden', (error, results) => {
+            if (error) {
+                reject (error);
+            } else {
+                resolve (results);
+            }
+        }) 
+    })
+    );
+
     Promise.all(promises).then(values => {
         if(values[0].length){
             values[0].forEach(element => {
@@ -91,6 +102,14 @@ router.get('/allexpediente/',  /*isauth.isLoggedIn, isauth.isVip,*/ async (Req, 
 
                 values[2].find((single) => {
                     if(element.ID_EXP === single.ID_EXP){
+                        Object.assign(element, single);
+                    }
+                })
+
+
+
+                values[3].find((single) => {
+                    if(element.ID_NRORD === single.ID_NRORD_AI){
                         Object.assign(element, single);
                     }
                 })
@@ -261,7 +280,7 @@ router.post('/add/expediente', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, R
                 reject(error);
             }else{
                 if(results.length){
-                    nro_orden = results[0]+1;
+                    nro_orden = results[0].nro_orden+1;
                 }else{
                     nro_orden = 1;
                 }

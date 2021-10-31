@@ -16,6 +16,9 @@ helpers.isVip = (rol) => {
 }
 
 helpers.toFormat =  (date) => {
+    if (date == undefined) { return ''; }
+
+
     let day = date.getDate();
     let month = date.getMonth()+1;
     let year = date.getFullYear();
@@ -33,6 +36,8 @@ helpers.toFormat =  (date) => {
 }
 
 helpers.toFormatDef =  (date) => {
+    if (date == undefined) { return ''; }
+
     let day = date.getDate();
     let month = date.getMonth()+1;
     let year = date.getFullYear();

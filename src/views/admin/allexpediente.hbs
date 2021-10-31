@@ -15,6 +15,7 @@
         <td>Contratista</td>
         <td>Presupuesto</td>
         <td>Fecha Certificacion</td>
+        <td>OPERATIONS</td>
     </tr>
     {{#each expedientes}}
     <tr>
@@ -22,7 +23,7 @@
             {{ ID_EXP }}
         </td>
         <td>
-            {{ ID_NRORD }}
+            {{ nro_orden }} | {{ mes_orden }}
         </td>
         <td>
             {{ toFormat fecha_pedido }}
@@ -53,6 +54,13 @@
         </td>
         <td>
             {{ toFormat fecha_certificacion }}
+        </td>
+        <td>
+            <select>
+                <option disabled selected>Operaciones</option>
+                <option><button href="/" style="color: red;">Eliminar</button></option>
+                <option><button href="/" style="color:slateblue;">Editar</button></option> 
+            </select>
         </td>
     </tr>
     {{else}}
