@@ -1,4 +1,3 @@
-const { render } = require('timeago.js');
 const requires = require('../admin_requires');
 const router   =  requires.router;
 const pool     =  requires.pool;
@@ -9,7 +8,7 @@ router.get('/allinstitucion/', /*isauth.isLoggedIn, isauth.isVip,*/ async (Req, 
     const promises = [];
 
     promises.push(
-        new Promise ((resolve, reject) => {  pool.query('SELECT * FROM institucion', async (error, results) => {
+        new Promise ((resolve, reject) => {  pool.query('SELECT * FROM institucion WHERE activo = 1', async (error, results) => {
             if(error){
                 reject(error);
             }else{
@@ -269,7 +268,7 @@ router.get('/edit/institucion/:CUE/:ID_EST', /*isauth.isLoggedIn, isauth.isVip,*
     const { CUE, ID_EST } = Req.params;
     const promises = [];
 
-    promises.push( new Promise ((Resolve, Reject) => {
+    promises.push( new Promise ((Resolve) => {
                 const micro_enc = [
                     new Promise((Resolve, Reject) => {
                         pool.query('SELECT * FROM `encargados` WHERE ID_TIPOENC = 1', (error, results) => {
@@ -386,7 +385,7 @@ router.get('/edit/institucion/:CUE/:ID_EST', /*isauth.isLoggedIn, isauth.isVip,*
     );
 
     promises.push(
-        new Promise ((Resolve, Reject) => {  pool.query('SELECT * FROM institucion WHERE CUE = ? AND ID_EST = ? ', [CUE, ID_EST],  (error, results) => {
+        new Promise ((Resolve, Reject) => {  pool.query('SELECT * FROM institucion WHERE CUE=? AND ID_EST=? ', [CUE, ID_EST],  (error, results) => {
             if(error){
                 Reject (error);
             }else{
@@ -401,7 +400,7 @@ router.get('/edit/institucion/:CUE/:ID_EST', /*isauth.isLoggedIn, isauth.isVip,*
     );
 
     promises.push(
-        new Promise ((Resolve, Reject) => {  pool.query('SELECT * FROM inst_dom WHERE CUE = ? AND ID_EST = ? ', [CUE, ID_EST],  (error, results) => {
+        new Promise ((Resolve, Reject) => {  pool.query('SELECT * FROM inst_dom WHERE CUE=? AND ID_EST=? ', [CUE, ID_EST],  (error, results) => {
             if(error){
                 Reject (error);
             }else{
@@ -418,7 +417,7 @@ router.get('/edit/institucion/:CUE/:ID_EST', /*isauth.isLoggedIn, isauth.isVip,*
     );
 
     promises.push(
-        new Promise ((Resolve, Reject) => {  pool.query('SELECT * FROM inst_tel WHERE CUE = ? AND ID_EST = ? ', [CUE, ID_EST],  (error, results) => {
+        new Promise ((Resolve, Reject) => {  pool.query('SELECT * FROM inst_tel WHERE CUE=? AND ID_EST=? ', [CUE, ID_EST],  (error, results) => {
             if(error){
                 Reject (error);
             }else{
@@ -435,7 +434,7 @@ router.get('/edit/institucion/:CUE/:ID_EST', /*isauth.isLoggedIn, isauth.isVip,*
     );
 
     promises.push(
-        new Promise ((Resolve, Reject) => {  pool.query('SELECT * FROM inst_enc WHERE CUE = ? AND ID_EST = ? ', [CUE, ID_EST],  (error, results) => {
+        new Promise ((Resolve, Reject) => {  pool.query('SELECT * FROM inst_enc WHERE CUE=? AND ID_EST=? ', [CUE, ID_EST],  (error, results) => {
             if(error){
                 Reject (error);
             }else{
@@ -464,7 +463,212 @@ router.get('/edit/institucion/:CUE/:ID_EST', /*isauth.isLoggedIn, isauth.isVip,*
 
 });
 
+router.post('/edit/institucion/:CUE/:ID_EST', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, Res) => {
+    //revisar
+    const { CUE, ID_EST } = Req.params;
+    const Promises = [];
+    var isRep;
 
+    if(Req.body.CUE === Req.params.CUE && Req.body.ESTABLECIMIENTO === Req.params.ID_EST){
+        
+        isRep = new Promise((Resolve, Reject) => {Resolve(0)})
+        
+    }else{
+        
+        isRep = new Promise((Resolve, Reject) => {
+            //corregir
+                pool.query('SELECT * FROM institucion WHERE CUE = ? OR ID_EST = ?', [Req.body.CUE, Req.body.ESTABLECIMIENTO], async (error, results) => {
+                    if(error){
+                        Reject(error);
+                    }else{
+                        Resolve(results.length);
+                    }
+                });
+            })
+        
+    }
+
+    Promise.resolve(isRep).then( values => {
+        if(!values){
+            //corregir
+            Promises.push(
+                new Promise((Resolve, Reject) => {
+                    pool.query('SELECT * FROM inst_dom WHERE CUE = ? AND ID_EST = ?', [CUE, ID_EST], async (error, results) => {
+                        if(error){
+                            Reject(error);
+                        }else{
+                            if(results.length){
+                                if(Req.body.nmb_calle != '' && Req.body.nro_calle != ''){
+                                    pool.query('UPDATE `domicilio` SET `nmb_calle` = ?, `nro_calle` = ?, `ID_LOCALIDAD` = ? WHERE ID_DOM = ?', [Req.body.nmb_calle, Req.body.nro_calle, Req.body.LOCALIDAD, results[0].ID_DOM], (error) => {
+                                        if(error){  
+                                            Reject(error)
+                                        }else{
+                                            Resolve();
+                                        }
+                                    });
+                                }else{
+                                    pool.query('DELETE `domicilio` WHERE ID_DOM = ?', [results[0].ID_DOM]);
+                                    pool.query('DELETE `inst_dom` WHERE CUE = ? AND ID_EST = ? AND ID_DOM = ?', [results[0].CUE, results[0].ID_EST, results[0].ID_DOM]);
+                                    Resolve();
+                                }   
+                            }else{  
+                                if(Req.body.nmb_calle != '' && Req.body.nro_calle != ''){
+                                    pool.query('INSERT INTO domicilio (ID_LOCALIDAD, nmb_calle, nro_calle) VALUES (?, ?, ?)', [Req.body.LOCALIDAD, Req.body.nmb_calle, Req.body.nro_calle],  async (error, results) => {
+                                        if(error){
+                                            Reject(error);
+                                        }else{
+                                            pool.query('INSERT INTO inst_dom (CUE, ID_EST, ID_DOM) VALUES (?, ?, ?)', [CUE, ID_EST, results.insertId]);
+                                            Resolve();
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    });
+                })
+            );
+
+
+            Promises.push(
+                new Promise((Resolve, Reject) => {
+                    pool.query('SELECT * FROM `inst_tel` WHERE CUE = ? AND ID_EST = ?', [CUE, ID_EST], async (error, results) => {
+                        if(error){
+                            Reject(error);
+                        }else{
+                            if(results.length){
+                                if(Req.body.telefono_escuela != ''){
+                                    pool.query('UPDATE `telefono` SET `telefono` = ? WHERE ID_TEL = ?', [Req.body.telefono_escuela, results[0].ID_TEL], (error) => {
+                                        if(error){  
+                                            Reject(error)
+                                        }else{                                                                                                  
+                                            Resolve();
+                                        }
+                                    });
+                                }else{
+                                    pool.query('DELETE `telefono` WHERE ID_TEL = ?', [results[0].ID_TEL]);
+                                    pool.query('DELETE `inst_tel` WHERE CUE = ? AND ID_EST = ? AND ID_TEL = ?', [results[0].CUE, results[0].ID_EST, results[0].ID_TEL]);
+                                    Resolve();
+                                }   
+                            }else{  
+                                if(Req.body.telefono_escuela != ''){
+                                    pool.query('INSERT INTO telefono (telefono) VALUES (?)', [Req.body.telefono_escuela],  async (error, results) => {
+                                        if(error){
+                                            Reject(error);
+                                        }else{
+                                            pool.query('INSERT INTO inst_tel (CUE, ID_EST, ID_TEL) VALUES (?, ?, ?)', [CUE, ID_EST, results.insertId]);
+                                            Resolve();
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    });
+                })  
+            );
+
+
+            Promises.push(
+                new Promise((Resolve, Reject) => {
+                    pool.query('DELETE FROM `inst_enc` WHERE CUE = ? AND ID_EST = ?', [CUE, ID_EST], async (error) => {
+                        if(error){
+                            Reject(error);
+                        }else{
+                            let promise1, promise2;
+
+
+                            if(Req.body.directores != ''){
+                                promise1 = new Promise((Resolve, Reject) => {
+                                    pool.query('INSERT INTO inst_enc (CUE, ID_EST, ID_ENCARGADO) VALUES (?,?,?) ', [Req.body.CUE, Req.body.ESTABLECIMIENTO, Req.body.directores], (error) => {
+                                        if(error){
+                                            Reject(error);
+                                        }else{
+                                            Resolve();
+                                        }   
+                                    });
+                                });
+                            }else{
+                                promise1 = new Promise((Resolve, Reject) => {Resolve()});
+                            }
+
+                            if(Req.body.inspectores != ''){
+                                promise2 = new Promise((Resolve, Reject) => {
+                                    pool.query('INSERT INTO inst_enc (CUE, ID_EST, ID_ENCARGADO) VALUES (?,?,?) ', [Req.body.CUE, Req.body.ESTABLECIMIENTO, Req.body.inspectores], (error) => {
+                                        if(error){
+                                            Reject(error);
+                                        }else{
+                                            Resolve();
+                                        }   
+                                    });
+                                });
+                            }else{
+                                promise2 = new Promise((Resolve, Reject) => {Resolve()});
+                            }
+
+
+                            Promise.all([promise1, promise2]).then(Resolve());
+                        }
+                    });
+                })  
+            );
+
+            Promises.push(
+                 new Promise((Resolve, Reject) => {
+                    const INST = new Promise ((Resolve, Reject) => { pool.query('UPDATE `institucion` SET CUE = ?, ID_EST = ?, nombre_establecimiento = ?, ID_MODALIDAD = ? WHERE CUE=? AND ID_EST=?', [Req.body.CUE, Req.body.ESTABLECIMIENTO, Req.body.nombre_escuela, Req.body.NIVEL, CUE, ID_EST], async (error) => {
+                        if(error){
+                            Reject(error);
+                        }else{
+                           Resolve();
+                        }
+                    })})
+
+                    const INST_DOM = new Promise ((Resolve, Reject) => { pool.query('UPDATE `inst_dom` SET CUE = ?, ID_EST = ? WHERE CUE=? AND ID_EST=?', [Req.body.CUE, Req.body.ESTABLECIMIENTO, CUE, ID_EST], async (error) => {
+                        if(error){
+                            Reject(error);
+                        }else{
+                           Resolve();
+                        }
+                    })})
+
+
+                    const INST_TEL = new Promise ((Resolve, Reject) => { pool.query('UPDATE `inst_tel` SET CUE = ?, ID_EST = ? WHERE CUE=? AND ID_EST=?', [Req.body.CUE, Req.body.ESTABLECIMIENTO, CUE, ID_EST], async (error) => {
+                        if(error){
+                            Reject(error);
+                        }else{
+                           Resolve();
+                        }
+                    })})
+
+                    Promise.all([INST, INST_DOM, INST_TEL]).then(Resolve())
+                })  
+            );
+
+
+            Promise.all(Promises).then(function(){
+                Req.flash('success', 'Se edito la instutucón correctamente!');
+                Res.redirect('/allinstitucion/');
+            });
+        }else{
+            Req.flash('error', 'Esa institución ya esta creada con anterioridad!');
+            Res.redirect('/edit/institucion/'+CUE+'/'+ID_EST);
+        }
+    });
+});
+
+//-DELETE-//
+router.get('/delete/institucion/:CUE/:ID_EST', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, Res) => {
+    const {CUE, ID_EST} = Req.params;
+   
+    pool.query('UPDATE `institucion` SET `activo` = 0 WHERE CUE=? AND ID_EST=?', [CUE, ID_EST], (error) => {
+        if(error){
+            Req.flash('error', 'No se pudo editar la instutucón');
+            Res.redirect('/allinstitucion/');
+            throw error;
+        }else{
+            Req.flash('success', 'Se edito la instutucón correctamente!');
+            Res.redirect('/allinstitucion/');
+        }
+    });
+});
 
 
 //-Encargados-//
