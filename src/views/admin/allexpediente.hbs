@@ -56,11 +56,8 @@
             {{ toFormat fecha_certificacion }}
         </td>
         <td>
-            <select>
-                <option disabled selected>Operaciones</option>
-                <option><button href="/" style="color: red;">Eliminar</button></option>
-                <option><button href="/" style="color:slateblue;">Editar</button></option> 
-            </select>
+            <a href="/delete/expediente/{{ ID_EXP }}" style="color: red;">Eliminar</a>
+            <a href="/edit/expediente/{{ ID_EXP }}" style="color:slateblue;">Editar</a> 
         </td>
     </tr>
     {{else}}

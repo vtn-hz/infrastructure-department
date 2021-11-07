@@ -16,7 +16,7 @@ helpers.isVip = (rol) => {
 }
 
 helpers.toFormat =  (date) => {
-    if (date == undefined) { return ''; }
+    if (!(date instanceof Date)) { return ''; }
 
 
     let day = date.getDate();
@@ -36,7 +36,7 @@ helpers.toFormat =  (date) => {
 }
 
 helpers.toFormatDef =  (date) => {
-    if (date == undefined) { return ''; }
+    if (!(date instanceof Date)) { return ''; }
 
     let day = date.getDate();
     let month = date.getMonth()+1;
@@ -69,7 +69,6 @@ helpers.checkornot = (value, inelement) => {
 }
 
 helpers.selectedornot = (value, inelement) => {
-    console.log(value+" "+inelement);
     if(inelement === undefined){
         return "";
     }else{
