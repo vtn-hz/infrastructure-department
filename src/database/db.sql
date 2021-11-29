@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 29, 2021 at 04:06 AM
+-- Generation Time: Nov 01, 2021 at 12:00 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -351,21 +351,18 @@ CREATE TABLE `expediente` (
   `informe_tecnico` text,
   `postpone_date` date DEFAULT NULL,
   `CUE` varchar(50) NOT NULL,
-  `ID_EST` varchar(50) NOT NULL,
   `ID_ESTADO` int(11) NOT NULL,
-  `ID_OBRA` int(11) NOT NULL,
-  `activo` tinyint(1) NOT NULL DEFAULT '1'
+  `ID_EST` varchar(50) NOT NULL,
+  `ID_OBRA` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `expediente`
 --
 
-INSERT INTO `expediente` (`ID_EXP`, `ID_NRORD`, `fecha_pedido`, `informe_tecnico`, `postpone_date`, `CUE`, `ID_EST`, `ID_ESTADO`, `ID_OBRA`, `activo`) VALUES
-('6|2021', 2, '2021-10-28', '                                                                                                               \r\n                                                                                                                                   \r\n                                                                                                                                   \r\n                                                 1231                                                                                  \r\n                                                                                                                                   \r\n                          No se                                                                                                         \r\n\r\n                \r\n                \r\n                \r\n                \r\n                \r\n                ', NULL, 'CUE', 'EST AID', 2, 1, 1),
-('5|2021', 4, '2021-11-03', '                                                                                                               \r\n                                          123                                                                                        \r\n                                                                                                                                   \r\n                                                                                                                                   \r\n                                                                                                                                   \r\n                                                                                                                                   \r\n                                           123                                                                                       \r\n                                                 123123                                                                                  \r\n                                                                                                                                   \r\n                        DIcen que el tran                                                                                                        \r\n\r\n                \r\n                \r\n                \r\n                \r\n                \r\n                \r\n                \r\n                \r\n                \r\n                ', '2021-11-10', '123123213123', '123123123', 2, 3, 1),
-('7|2021', 6, '2021-11-07', '                                                                                                               \r\n123\r\n                ', '2021-11-17', '123123213123', '123123123', 2, 6, 0),
-('1|2024', 7, '2024-10-22', '                                                                                                               \r\nQWE\r\n                ', NULL, '123123', 'ESTID', 1, 7, 1);
+INSERT INTO `expediente` (`ID_EXP`, `ID_NRORD`, `fecha_pedido`, `informe_tecnico`, `postpone_date`, `CUE`, `ID_ESTADO`, `ID_EST`, `ID_OBRA`) VALUES
+('3|2021', 2, '2021-10-31', '      No se                                                                                                         \r\n\r\n                ', NULL, '123123213123', 1, '123123123', 1),
+('5|2021', 4, '2021-10-31', '    DIcen que el tran                                                                                                        \r\n\r\n                ', NULL, '1231234', 1, 'ESTIDD', 3);
 
 -- --------------------------------------------------------
 
@@ -384,12 +381,8 @@ CREATE TABLE `exp_con` (
 --
 
 INSERT INTO `exp_con` (`ID_CONT`, `ID_EXP`, `presupuesto_entregado`) VALUES
-(14, '6|2021', 621),
-(13, '3', 200000),
-(6, '5|2021', 1231),
-(3, '6|2021', 213),
-(3, '7|2021', 213),
-(1, '1|2024', 123);
+(1, '3|2021', 621000),
+(13, '5|2021', 200000);
 
 -- --------------------------------------------------------
 
@@ -411,11 +404,9 @@ CREATE TABLE `exp_pk` (
 INSERT INTO `exp_pk` (`ID_EXP_AU`, `ID_EXP`, `nro_expediente`, `anio_expediente`) VALUES
 (1, '1|2021', 1, 2021),
 (2, '2|2021', 2, 2021),
-(6, '6|2021', 6, 2021),
+(3, '3|2021', 3, 2021),
 (4, '4|2021', 4, 2021),
-(5, '5|2021', 5, 2021),
-(7, '7|2021', 7, 2021),
-(8, '1|2024', 1, 2024);
+(5, '5|2021', 5, 2021);
 
 -- --------------------------------------------------------
 
@@ -428,14 +419,6 @@ CREATE TABLE `fecha_garantia` (
   `ID_OBRA` int(11) NOT NULL,
   `fecha_garantia` date NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `fecha_garantia`
---
-
-INSERT INTO `fecha_garantia` (`ID_FECHA`, `ID_OBRA`, `fecha_garantia`) VALUES
-(3, 5, '2021-11-02'),
-(4, 6, '2021-11-02');
 
 -- --------------------------------------------------------
 
@@ -581,12 +564,9 @@ CREATE TABLE `nro_orden` (
 
 INSERT INTO `nro_orden` (`ID_NRORD_AI`, `nro_orden`, `mes_orden`, `anio_orden`) VALUES
 (1, 1, 1, 2021),
-(2, 7, 10, 2021),
+(2, 2, 1, 2021),
 (3, 3, 1, 2021),
-(4, 4, 1, 2021),
-(5, 1, 11, 2021),
-(6, 2, 11, 2021),
-(7, 1, 10, 2024);
+(4, 4, 1, 2021);
 
 -- --------------------------------------------------------
 
@@ -610,13 +590,9 @@ CREATE TABLE `obra` (
 --
 
 INSERT INTO `obra` (`ID_OBRA`, `ID_ESTADO`, `fecha_contrato`, `monto_numeros`, `ID_CONTRATACION`, `obra_realizada`, `ID_FONDO`, `ID_OFICINA`) VALUES
-(1, 2, '2021-11-09', 12, 1, '               \r\n                                   \r\n                                   \r\n                                   \r\n                                   \r\n                                   \r\n   123                 \r\n                \r\n                \r\n                \r\n                \r\n                \r\n                ', 2, 5),
-(2, 2, '2021-11-09', 123123123, 2, '               \r\n                                   \r\n                                   \r\n                                   \r\n                                   \r\n   123                 \r\n                \r\n                \r\n                \r\n                \r\n                ', 3, 5),
-(3, 2, '2021-11-18', 2147, 2, '               \r\n                                   \r\n                                   \r\n                                   \r\n                                   \r\n                                   \r\n                                   \r\n   123                 \r\n                \r\n                \r\n                \r\n                \r\n                \r\n                \r\n                ', 3, 5),
-(4, 2, '2021-11-07', 12000, 2, '                                                                                                               \r\nO\r\n                ', 2, 4),
-(5, 2, '2021-11-07', 123, 2, '                                                                                                               \r\n123\r\n                ', 2, 1),
-(6, 2, '2021-11-07', 123, 2, '                                                                                                               \r\n123\r\n                ', 2, 1),
-(7, 1, '2024-10-07', 123, 2, '                                                                                                               \r\nQWE\r\n                ', 2, 1);
+(1, 1, '2021-10-31', 471263, 1, '                                                                                                               \r\nNo se\r\n                ', 1, 2),
+(2, 1, '2021-10-31', 5712378, 2, '                                                                                                               \r\nqweqwe\r\n                ', 2, 3),
+(3, 1, '2021-10-31', 5712378, 2, '                                                                                                               \r\nqweqwe\r\n                ', 2, 4);
 
 -- --------------------------------------------------------
 
@@ -756,8 +732,7 @@ INSERT INTO `tipo_oficina` (`ID_OFICINA`, `tipo`) VALUES
 (1, 'Infraestructura'),
 (2, 'Infraestructura'),
 (3, 'Vidrios'),
-(4, 'Vidrios'),
-(5, 'NUevo');
+(4, 'Vidrios');
 
 -- --------------------------------------------------------
 
@@ -1102,13 +1077,13 @@ ALTER TABLE `encargados`
 -- AUTO_INCREMENT for table `exp_pk`
 --
 ALTER TABLE `exp_pk`
-  MODIFY `ID_EXP_AU` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `ID_EXP_AU` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `fecha_garantia`
 --
 ALTER TABLE `fecha_garantia`
-  MODIFY `ID_FECHA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ID_FECHA` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `localidad`
@@ -1126,13 +1101,13 @@ ALTER TABLE `nivel_modalidad`
 -- AUTO_INCREMENT for table `nro_orden`
 --
 ALTER TABLE `nro_orden`
-  MODIFY `ID_NRORD_AI` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `ID_NRORD_AI` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `obra`
 --
 ALTER TABLE `obra`
-  MODIFY `ID_OBRA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `ID_OBRA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `representante`
@@ -1180,7 +1155,7 @@ ALTER TABLE `tipo_fondo`
 -- AUTO_INCREMENT for table `tipo_oficina`
 --
 ALTER TABLE `tipo_oficina`
-  MODIFY `ID_OFICINA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `ID_OFICINA` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `user`
