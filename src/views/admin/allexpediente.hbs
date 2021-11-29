@@ -1,61 +1,122 @@
-<h1>Todos los expedientes</h1> <a href="/add/expediente" style="color: green;">Agregar</a><br/>
-<table style="width: 100%">
-    <tr>
-        <td>NRO_EXP</td>
-        <td>NRO_ORDEN</td>
-        <td>Fecha</td>
-        <td>|||</td>
-        <td>CUE institucion</td>
-        <td>ESCUELA COD</td>
-        <td>|||</td>
-        <td>Monto</td>
-        <td>Letras</td>
-        <td>Fecha Contrato</td>
-        <td>|||</td>
-        <td>Contratista</td>
-        <td>Presupuesto</td>
-        <td>Fecha Certificacion</td>
-    </tr>
-    {{#each expedientes}}
-    <tr>
-        <td>
-            {{ ID_EXP }}
-        </td>
-        <td>
-            {{ ID_NRORD }}
-        </td>
-        <td>
-            {{ toFormat fecha_pedido }}
-        </td>
-        <td>|||</td>
-        <td>
-            {{ CUE }}
-        </td>
-        <td>
-            {{ ID_EST }}
-        </td>
-        <td>|||</td>
-        <td>
-            {{ monto_numeros }}
-        </td>
-        <td>
-            {{ numtolet monto_numeros }}
-        </td>
-        <td>
-            {{ toFormat fecha_contrato }}
-        </td>
-        <td>|||</td>
-        <td>
-            {{nombre}} {{apellido}}
-        </td>
-        <td>
-            {{ presupuesto_entregado }}
-        </td>
-        <td>
-            {{ toFormat fecha_certificacion }}
-        </td>
-    </tr>
-    {{else}}
-    <h1>No tiene mas instituciones</h1><br>
-    {{/each}}
-</table> 
+
+
+        <!--<div id="bg" class="img-fluid max-width">
+            <img src="https://fotografias.lasexta.com/clipping/cmsimages01/2018/07/24/0F8B8421-D3E2-4770-8029-28F404430B25/default.jpg?crop=4076,2293,x0,y214&width=1900&height=1069&optimize=low" alt="">
+        </div> Arreglar -->
+<br>
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col"></div>
+    </div>
+    <div class="row">
+        <div class="col">
+             
+            <div class="card">
+            <div class="card-header">
+
+                <div class="container row">
+                    <div class="col">
+                        <input class="form-control mr-sm-2" type="search" onkeyup="searcher();" id="exp_searcher" placeholder="Buscar Expediente..." aria-label="Buscar Expediente...">
+                    </div>
+                    <div class="col">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+            <table class="table">
+                <thead class="table-primary">
+                <tr>
+                    <th scope="col">#EXP</th>
+                    <th scope="col">#ORD</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col"></th>
+                    <th scope="col">#ESC</th>
+                    <th scope="col"></th>
+                    <th scope="col">Monto</th>
+                    <th scope="col">Letras</th>
+                    <th scope="col"></th>
+                    <th scope="col">Contratista</th>
+                    <th scope="col">Presupuesto</th>
+                    <th scope="col"></th>
+                    <th scope="col"><a href="/add/expediente" class="btn btn-success form-control" role="button">Agregar</a></th>
+                </tr>
+                </thead>
+                <tbody class="table-secondary"  id="exp">
+                    {{#each expedientes}}
+                            <tr>
+                                <td>
+                                    {{ ID_EXP }}
+                                </td>
+                                <td>
+                                    {{ nro_orden }} | {{ mes_orden }}
+                                </td>
+                                <td>
+                                    {{ toFormat fecha_pedido }}
+                                </td>
+                                <td></td>
+                                <td>
+                                    {{ ID_EST }}
+                                </td>
+                                <td></td>
+                                <td>
+                                    {{ monto_numeros }}
+                                </td>
+                                <td>
+                                    {{ numtolet monto_numeros }}
+                                </td>
+                                <td></td>
+                                <td>
+                                    {{nombre}} {{apellido}}
+                                </td>
+                                <td>
+                                    {{ presupuesto_entregado }}
+                                </td>
+                                <td>
+                                   
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                    <a href="/delete/expediente/{{ ID_EXP }}" class="btn btn-danger" role="button">Eliminar</a>
+                                    <a href="/edit/expediente/{{ ID_EXP }}" class="btn btn-secondary" role="button">Editar</a> 
+                                    </div>
+                                    
+                                    
+                                </td>
+                            </tr>
+                        {{else}}
+                            <h1>No tiene mas instituciones</h1><br>
+                    {{/each}}
+                </tbody>
+            </table>
+            </div>
+            </div>
+
+
+           
+        </div>
+    </div>
+</div>
+
+<script>
+    function searcher() {
+    var input = document.getElementById('exp_searcher');
+    var filter = input.value.toUpperCase();
+    const EXP = document.getElementById("exp");
+    const TR = EXP.getElementsByTagName('tr');
+
+    for (let i = 0; i < TR.length; i++) {
+        const TD = TR[i].getElementsByTagName("td");
+            for (let j = 0 ; j<TD.length ; j++) {
+                let txtValue = TD[j].textContent || TD[j].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    TR[i].style.display = "";
+                    break;
+                } else {
+                    TR[i].style.display = "none";
+                }
+            }    
+        }
+    }
+</script>

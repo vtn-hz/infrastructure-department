@@ -77,106 +77,115 @@ router.get('/add/institucion', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, R
             throw error;
         }else{
             if(results.length){
-                const  directores = [];
-                const  inspectores = [];
-                const size_t = results.length;
-                /*const end = () => {if(directores.length+inspectores.length === size_t) { console.log(directores); console.log(inspectores);  Res.render('admin/institucion/addinstitucion', {directores, inspectores}); }}
-                Funciona sin la funcion end, de no funcionar activar.
-                */
+                const directores = [];
+                const inspectores = [];
+
+
                 results.forEach(element => {
                     if(element.ID_TIPOENC == 1){
-                        pool.query('SELECT * FROM enc_tel WHERE ID_ENCARGADO = ?', [element.ID_ENCARGADO], async (error, results) => {
-                            if(results.length){
-                                TEL = await pool.query('SELECT * FROM telefono WHERE ID_TEL = ?', [results[0].ID_TEL]);
-                                
-                                if(TEL.length){
-                                    element.TEL = TEL[0].telefono; 
-                                }else{
-                                    element.TEL = "";
-                                }
-                            }else{
-                                element.TEL = "";
-                            }
-
-                            if(element.hasOwnProperty('EMAIL')){
-                                directores.push(element);
-                            }
-
-                            //end();
-                        });
-
-                        pool.query('SELECT * FROM enc_email WHERE ID_ENCARGADO = ?', [element.ID_ENCARGADO], async (error, results) => {
-                            if(results.length){
-                                EMAIL = await pool.query('SELECT * FROM email WHERE ID_EMAIL = ?', [results[0].ID_EMAIL]);
-                                if(EMAIL.length){
-                                    element.EMAIL = EMAIL[0].email;
-                                }else{
-                                    element.EMAIL = "";
-                                }
-                                
-                            }else{
-                                element.EMAIL = "";
-                            }
-
-                            if(element.hasOwnProperty('TEL')){
-                                directores.push(element);
-                            }
-
-                            //end();
-                        });
-
-
-                        
-                    }else{
-                        pool.query('SELECT * FROM enc_tel WHERE ID_ENCARGADO = ?', [element.ID_ENCARGADO], async (error, results) => {
-                            if(results.length){
-                                //console.log(results[0].ID_TEL);
-                                TEL = await pool.query('SELECT * FROM telefono WHERE ID_TEL = ?', [results[0].ID_TEL]);
-                                //console.log(TEL);
-                                if(TEL.length){
-                                    //console.log(TEL[0]);
-                                    element.TEL = TEL[0].telefono; 
-                                }else{
-                                    element.TEL = "";
-                                }
-                                
-                            }else{
-                                element.TEL = "";
-                            }
-
-                            if(element.hasOwnProperty('EMAIL')){
-                                inspectores.push(element);
-                            }
+                        directores.push ( new Promise ((Resolve, Reject) => { 
                             
-                            //end();
-                        });
-
-                        pool.query('SELECT * FROM enc_email WHERE ID_ENCARGADO = ?', [element.ID_ENCARGADO], async (error, results) => {
-                            if(results.length){
-                                EMAIL = await pool.query('SELECT * FROM email WHERE ID_EMAIL = ?', [results[0].ID_EMAIL]);
-                                if(EMAIL.length){
-                                    element.EMAIL = EMAIL[0].email;
-                                }else{
-                                    element.EMAIL = "";
+                            const TEL = new Promise ((Resolve, Reject) => { pool.query('SELECT * FROM enc_tel WHERE ID_ENCARGADO = ?', [element.ID_ENCARGADO], async (error, results) => {
+                                if(results.length){
+                                    pool.query('SELECT * FROM telefono WHERE ID_TEL = ?', [results[0].ID_TEL], (error, results) => {
+                                        if (error) {
+                                            Reject (error) ;
+                                        } else {
+                                            if (results.length) {
+                                                Resolve (results[0]) ;
+                                            }
+                                        }
+                                    });
                                 }
-                                
-                            }else{
-                                element.EMAIL = "";
-                            }
-
-                            if(element.hasOwnProperty('TEL')){
-                                inspectores.push(element);
-                            }
+                            })});
 
 
-                           // end();                        
-                        });
-                    }
+                            const EMAIL = new Promise ((Resolve, Reject) => {  pool.query('SELECT * FROM enc_email WHERE ID_ENCARGADO = ?', [element.ID_ENCARGADO], async (error, results) => {
+                                if(results.length){
+                                    pool.query('SELECT * FROM email WHERE ID_EMAIL = ?', [results[0].ID_EMAIL], (error, results) => {
+                                        if (error) {
+                                            Reject (error) ;
+                                        } else {
+                                            if (results.length) {
+                                                Resolve (results[0]) ;
+                                            }
+                                        }
+                                    });
+                                }
+                            })});
 
+                            Promise.all ([TEL, EMAIL]) .then (VALUES => {
+                                Object.assign(element, VALUES[0]);
+                                Object.assign(element, VALUES[1]);
+                                Resolve(element);
+                            })
+                        })
+                        );
                     
+                    }else{
+                        inspectores.push ( new Promise ((Resolve, Reject) => { 
+                            
+                            const TEL = new Promise ((Resolve, Reject) => { pool.query('SELECT * FROM enc_tel WHERE ID_ENCARGADO = ?', [element.ID_ENCARGADO], async (error, results) => {
+                                if(results.length){
+                                    pool.query('SELECT * FROM telefono WHERE ID_TEL = ?', [results[0].ID_TEL], (error, results) => {
+                                        if (error) {
+                                            Reject (error) ;
+                                        } else {
+                                            if (results.length) {
+                                                Resolve (results[0]) ;
+                                            }
+                                        }
+                                    });
+                                }
+                            })});
+
+
+                            const EMAIL = new Promise ((Resolve, Reject) => {  pool.query('SELECT * FROM enc_email WHERE ID_ENCARGADO = ?', [element.ID_ENCARGADO], async (error, results) => {
+                                if(results.length){
+                                    pool.query('SELECT * FROM email WHERE ID_EMAIL = ?', [results[0].ID_EMAIL], (error, results) => {
+                                        if (error) {
+                                            Reject (error) ;
+                                        } else {
+                                            if (results.length) {
+                                                Resolve (results[0]) ;
+                                            }
+                                        }
+                                    });
+                                }
+                            })});
+
+                            Promise.all ([TEL, EMAIL]) .then (VALUES => {
+                                Object.assign(element, VALUES[0]);
+                                Object.assign(element, VALUES[1]);
+                                Resolve(element);
+                            })
+                        })
+                        );
+                    }
                 });
 
-                Res.render('admin/institucion/addinstitucion', {directores, inspectores});
+
+                new Promise ((Resolve) => {
+
+                    const director = new Promise ((Resolve) => { Promise.all (directores) . then (all => {
+                        Resolve (all);
+                    })});
+
+
+                    const inspector = new Promise ((Resolve) => { Promise.all (inspectores) . then (all => {
+                        Resolve (all);
+                    })});
+
+
+                    Promise.all ([director, inspector]) .then (values => {Resolve(values)});
+                }).then(
+                    ALL => {
+                        Res.render('admin/institucion/addinstitucion', {director: ALL[0], inspector: ALL[1]});
+                    }
+                );
+
+
+              
             }else{
                 Res.render('admin/institucion/addinstitucion');
             }
@@ -186,75 +195,60 @@ router.get('/add/institucion', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, R
 
 router.post('/add/institucion', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, Res) => { 
     pool.query('SELECT * FROM institucion WHERE CUE = ? OR ID_EST = ?', [Req.body.CUE, Req.body.ESTABLECIMIENTO], async (error, resu) => {
-        if(!resu.length){
-            var INS_DOM = {
-                CUE: 0,
-                ID_EST: 0,
-                ID_DOM: 0  
-            };
-        
-        
-            var INS_TEL = {
-                CUE: 0,
-                ID_EST: 0,
-                ID_TEL: 0  
-            };
-
-            pool.query('INSERT INTO institucion (CUE, ID_EST, nombre_establecimiento, ID_MODALIDAD) VALUES (?, ?, ?, ?)', [Req.body.CUE, Req.body.ESTABLECIMIENTO, Req.body.nombre_escuela, Req.body.NIVEL],  async (error, results) => {
-                if(INS_DOM.ID_DOM){
-                    INS_DOM.CUE = Req.body.CUE;
-                    INS_DOM.ID_EST = Req.body.ESTABLECIMIENTO;
-                    pool.query('INSERT INTO inst_dom SET ?', [INS_DOM]);
-                    console.log(INS_DOM);
-                }else{
-                    INS_DOM.CUE = Req.body.CUE;
-                    INS_DOM.ID_EST = Req.body.ESTABLECIMIENTO;
-                }
-
-                if(INS_TEL.ID_TEL){
-                    INS_TEL.CUE = Req.body.CUE;
-                    INS_TEL.ID_EST = Req.body.ESTABLECIMIENTO;
-                    pool.query('INSERT INTO inst_tel SET ?', [INS_TEL]);
-                    console.log(INS_TEL);
-                }else{
-                    INS_TEL.CUE = Req.body.CUE;
-                    INS_TEL.ID_EST = Req.body.ESTABLECIMIENTO;
-                }
+        if(!resu.length){ 
+            const Promises = [
+                new Promise ((Resolve, Reject) => {
+                    pool.query('INSERT INTO institucion (CUE, ID_EST, nombre_establecimiento, ID_MODALIDAD) VALUES (?, ?, ?, ?)', [Req.body.CUE, Req.body.ESTABLECIMIENTO, Req.body.nombre_escuela, Req.body.NIVEL],  async (error, results) => {
+                        if (error) {
+                            Reject (error) ;
+                        } else {
+                            if(Req.body.directores != null){
+                                pool.query('INSERT INTO inst_enc (CUE, ID_EST, ID_ENCARGADO) VALUES (?, ?, ?)', [Req.body.CUE, Req.body.ESTABLECIMIENTO, Req.body.directores]);
+                            }
+            
+                            if(Req.body.inspectores != null){
+                                pool.query('INSERT INTO inst_enc (CUE, ID_EST, ID_ENCARGADO) VALUES (?, ?, ?)', [Req.body.CUE, Req.body.ESTABLECIMIENTO, Req.body.inspectores]);
+                            }
+    
+                            
+                            Resolve ([Req.body.CUE, Req.body.ESTABLECIMIENTO]);
+                        }
 
 
-                if(Req.body.directores){
-                    pool.query('INSERT INTO inst_enc (CUE, ID_EST, ID_ENCARGADO) VALUES (?, ?, ?)', [Req.body.CUE, Req.body.ESTABLECIMIENTO, Req.body.directores]);
-                }
 
-                if(Req.body.inspectores){
-                    pool.query('INSERT INTO inst_enc (CUE, ID_EST, ID_ENCARGADO) VALUES (?, ?, ?)', [Req.body.CUE, Req.body.ESTABLECIMIENTO, Req.body.inspectores]);
-                }
+                    });
+                }), 
+
+                new Promise ((Resolve, Reject) => {
+                    pool.query('INSERT INTO domicilio (ID_LOCALIDAD, nmb_calle, nro_calle) VALUES (?, ?, ?)', [Req.body.LOCALIDAD, Req.body.nmb_calle, Req.body.nro_calle],  async (error, results) => {
+                        if (error) {
+                            Reject (error) ;
+                        } else {
+                            Resolve (results.insertId) ;
+                        }
+                    });
+                }),
+
+                new Promise ((Resolve, Reject) => {
+                    pool.query('INSERT INTO telefono (telefono) VALUES (?)', [Req.body.telefono_escuela],  async (error, results) => {
+                        if (error) {
+                            Reject (error) ;
+                        } else {
+                            Resolve (results.insertId) ;
+                        }
+                    });
+                })
+            ];
+            
+
+
+
+            Promise.all (Promises).then (IDS => {
+                pool.query('INSERT INTO inst_dom (CUE, ID_EST, ID_DOM) VALUES (?, ?, ?)', [IDS[0][0], IDS[0][1], IDS[1]]);
+                pool.query('INSERT INTO inst_tel (CUE, ID_EST, ID_TEL) VALUES (?, ?, ?)', [IDS[0][0], IDS[0][1], IDS[2]]);
+                Req.flash('success', 'Se creo la instutucón correctamente!');
+                Res.redirect('/allinstitucion/');
             });
-
-
-            pool.query('INSERT INTO domicilio (ID_LOCALIDAD, nmb_calle, nro_calle) VALUES (?, ?, ?)', [Req.body.LOCALIDAD, Req.body.nmb_calle, Req.body.nro_calle],  async (error, results) => {
-                if(INS_DOM.CUE && INS_DOM.ID_EST){
-                    INS_DOM.ID_DOM = results.insertId;
-                    pool.query('INSERT INTO inst_dom SET ?', [INS_DOM]);
-                    console.log(INS_DOM);
-                }else{
-                    INS_DOM.ID_DOM = results.insertId;
-                }
-            });
-
-
-            pool.query('INSERT INTO telefono (telefono) VALUES (?)', [Req.body.telefono_escuela],  async (error, results) => {
-                if(INS_TEL.CUE && INS_TEL.ID_EST){
-                    INS_TEL.ID_TEL = results.insertId;
-                    pool.query('INSERT INTO inst_tel SET ?', [INS_TEL]);
-                    console.log(INS_TEL);
-                }else{
-                    INS_TEL.ID_TEL = results.insertId;
-                }
-            });
-
-            Req.flash('success', 'Se creo la instutucón correctamente!');
-            Res.redirect('/allinstitucion/');
         }else{
             Req.flash('error', 'Esa institución ya esta creada con anterioridad!');
             Res.redirect('/allinstitucion/');

@@ -6,7 +6,7 @@ router.get('/', (Req, Res) => {
 });
 
 
-router.get('/about', (Req, Res) => {
+/*router.get('/about', (Req, Res) => {
     var obj = {
         vtn: "Valentino",
         gnd: "Franco",
@@ -26,5 +26,5 @@ router.get('/about', (Req, Res) => {
             
     });
 });
-
+*/
 module.exports = router;

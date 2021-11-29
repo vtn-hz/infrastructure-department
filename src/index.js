@@ -61,6 +61,8 @@ app.use(require('./routes/admin/admin'));
 // Static Files
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+
 // Server is listening
 app.listen(app.get('port'), () => {
     console.log('Server on port ', app.get('port'));

@@ -1,29 +1,142 @@
-<h2>INGRESE</h2>
-<form action="/edit/contratista/{{ID_CONT}}" method="POST">
-    <label>Nombre: </label> <input type="text" value="{{nombre}}" name="nombre" id="nombre" required>
-    <label>Apellido: </label> <input type="text" value="{{apellido}}" name="apellido" id="apellido" required><br>
-    <input name="CUIT" id="CUIT" placeholder="CUIT" value="{{CUIT}}" > <label>Fecha Certificacion: </label><input type="date" name="fecha_certificacion" id="fecha_certificacion" value="{{toFormatDef fecha_certificacion}}">
-    <br><br>
-    <label>Direccion: </label> <input placeholder="Calle" name="nmb_calle" id="nmb_calle" value="{{nmb_calle}}"> <input placeholder="Nro" type="number" name="nro_calle" id="nro_calle" value="{{nro_calle}}">
+<form action="/edit/contratista/{{ID_CONT}}" method="POST" class="container">
+    <h2>INGRESE</h2>
+    <div class="row">
+        <div class="col-2">
+            <label class="form-label">Nombre Completo: </label> 
+        </div>
+        <div class="col input-group">
+            <input class="form-control" value="{{nombre}}" type="text" name="nombre" id="name" placeholder="Nombre" required> 
+            <input class="form-control" value="{{apellido}}" type="text" name="apellido" id="apellido" placeholder="Apellido" required> 
+        </div>
+    </div>
     <br>
-    <input type="radio" id="mdp" name="LOCALIDAD" value="1" required {{checkornot 1 localidad }}> <label>Mar del Plata</label>
-    <input type="radio" id="batan" name="LOCALIDAD" value="2" {{checkornot 2 localidad }}> <label>Batan</label>
-    <input type="radio" id="santaclara" name="LOCALIDAD" value="3" {{checkornot 3 localidad }}> <label>Santa Clara</label>
-    <br><br>
-    <label>Email: </label><input placeholder="Email" type="email" name="email_a" value="{{email1}}" required>   <input name="email_1" type="hidden" value={{email_1}}> 
-     <input placeholder="Email Opcional" type="email" name="email_b" value="{{email2}}">                        <input name="email_2" type="hidden" value={{email_2}}> 
+    <div class="row">
+        <div class="col">
+            <input class="form-control" value="{{CUIT}}" name="CUIT" id="CUIT" placeholder="CUIT">
+        </div>
+        <div class="col"></div>
+        <div class="col container">
+            <div class="row">
+                <div class="col-4">
+                    <label>Fecha Certificacion: </label>
+                </div>
+                <div class="col">
+                    <input value="{{toFormatDef fecha_certificacion}}" class="form-control" type="date" name="fecha_certificacion" id="fecha_certificacion">
+                </div>
+            </div>
+        </div>
+    </div>
     <br>
-    <label>Numero de Telefono: </label><input placeholder="Telefono" type="number" name="telefono_a" value="{{tel1}}" required> <input name="tel_1" type="hidden" value={{tel_1}}> 
-    <input placeholder="Telefono Opcional" type="number" name="telefono_b" value="{{tel2}}">                                    <input name="tel_2" type="hidden" value={{tel_2}}>
+    <div class="row">
+        <div class="col-2">
+            <label>Direccion: </label> 
+        </div>
+        <div class="col">
+            <div class="input-group">
+                <input  value="{{nmb_calle}}" placeholder="Calle" name="nmb_calle" id="nmb_calle" class="form-control"> <input value="{{nro_calle}}" placeholder="Nro" type="number" name="nro_calle" id="nro_calle" class="form-control">
+            </div>
+        </div>
+        <div class="col-6"></div>
+    </div>
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-4">
+            <input type="radio" id="mdp" name="LOCALIDAD" value="1" {{checkornot 1 localidad }} required> <label>Mar del Plata</label>
+            <input type="radio" id="batan" name="LOCALIDAD" value="2" {{checkornot 2 localidad }}> <label>Batan</label>
+            <input type="radio" id="santaclara" name="LOCALIDAD" value="3" {{checkornot 3 localidad }} > <label>Santa Clara</label>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-2">
+             <label>Email: </label>
+        </div>
+        <div class="col-4">
+            <div class="input-group">
+                <input class="form-control" placeholder="Email" type="email" value="{{email1}}"  name="email_a" required> <input  class="form-control" placeholder="Email Opcional" type="email" value="{{email2}}" name="email_b">
+            </div>
+            <input name="email_1" type="hidden" value={{email_1}}> 
+            <input name="email_2" type="hidden" value={{email_2}}> 
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-2">
+            <label>Numero de Telefono: </label>
+        </div>
+        <div class="col-4">
+            <div class="input-group">
+                <input class="form-control" placeholder="Telefono" value="{{tel1}}" type="number" name="telefono_a" required> <input   class="form-control"  placeholder="Telefono Opcional" type="number"  value="{{tel2}}" name="telefono_b">
+            </div>
+            <input name="tel_1" type="hidden" value={{tel_1}}>
+            <input name="tel_2" type="hidden" value={{tel_2}}>
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+        <div class="col-3">
+            <label>Nombre Completo del Representante: </label>
+        </div>
+        <div class="col-6">
+            <div class="input-group">
+                <input class="form-control" placeholder="Nombre" type="text" value="{{nombre_repre}}" name="nombre_repre" id="nombre_repre"> <input  class="form-control" placeholder="Apellido" type="text"  value="{{apellido_repre}}" name="apellido_repre" id="apellido_repre">
+            </div>
+        </div>
+    </div>
 
     <br><br>
-    <label>Nombre Completo del Representante: </label> <input placeholder="Nombre" type="text" value="{{nombre_repre}}" name="nombre_repre" id="nombre_repre" required> <input placeholder="Apellido" type="text" value="{{apellido_repre}}" name="apellido_repre" id="apellido" required>
-    <br><br>
-
     <h5>Rubros: </h5>
-    <input type="checkbox" name="rubro" value="1" {{checkornot 1 rubro }}> <label>Albañileria </label> <input type="checkbox" name="rubro" value="2" {{checkornot 2 rubro }}> <label>Calderas </label> <input type="checkbox" name="rubro" value="3" {{checkornot 3 rubro }}><label> Calefacción</label> <input type="checkbox" name="rubro" value="4" {{checkornot 4 rubro }}><label> Carpintería</label><br>
-    <input type="checkbox" name="rubro" value="5" {{checkornot 5 rubro }}> <label>Cerrajería </label> <input type="checkbox" name="rubro" value="6" {{checkornot 6 rubro }}> <label>Instalación Eléctrica </label> <input type="checkbox" name="rubro" value="7" {{checkornot 7 rubro }}><label> Instalación de Gas</label> <input type="checkbox" name="rubro" value="8" {{checkornot 8 rubro }}><label> Instalación Sanitaria</label><br>
-    <input type="checkbox" name="rubro" value="9" {{checkornot 9 rubro }}> <label>Herrería </label> <input type="checkbox" name="rubro" value="10" {{checkornot 10 rubro }}> <label>Pintura </label> <input type="checkbox" name="rubro" value="11" {{checkornot 11 rubro }}><label> Techos</label> <input type="checkbox" name="rubro" value="12" {{checkornot 12 rubro }}><label> Vidrios</label> <input type="checkbox" name="rubro" value="13" {{checkornot 13 rubro }}> <label>Yesería </label> <br>
-
-    <br><br><input type="submit" value="Editar">
-</form>  
+    <div class="row">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <input type="checkbox" name="rubro" value="1" {{checkornot 1 rubro }}> <label>Albañileria </label>
+                </div>
+                <div class="col">
+                    <input type="checkbox" name="rubro" value="2" {{checkornot 2 rubro }}> <label>Calderas </label>
+                </div>
+                <div class="col">
+                    <input type="checkbox" name="rubro" value="3" {{checkornot 3 rubro }}> <label>Calefacción</label>
+                </div>
+                <div class="col">
+                    <input type="checkbox" name="rubro" value="4" {{checkornot 4 rubro }}> <label> Carpintería</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <input type="checkbox" name="rubro" value="5" {{checkornot 5 rubro }}> <label>Cerrajería </label> 
+                </div>
+                <div class="col">
+                    <input type="checkbox" name="rubro" value="6" {{checkornot 6 rubro }}> <label>Instalación Eléctrica </label>
+                </div>
+                <div class="col">
+                    <input type="checkbox" name="rubro" value="7" {{checkornot 7 rubro }}> <label>Instalación de Gas</label>
+                </div>
+                <div class="col">
+                    <input type="checkbox" name="rubro" value="8" {{checkornot 8 rubro }}><label> Instalación Sanitaria</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <input type="checkbox" name="rubro" value="9" {{checkornot 9 rubro }}> <label>Herrería </label>
+                </div>
+                <div class="col">
+                    <input type="checkbox" name="rubro" value="10" {{checkornot 10 rubro }}> <label>Pintura </label>
+                </div>
+                <div class="col">
+                    <input type="checkbox" name="rubro" value="11" {{checkornot 11 rubro }}><label> Techos</label>
+                </div>
+                <div class="col">
+                    <input type="checkbox" name="rubro" value="12" {{checkornot 12 rubro }}><label> Vidrios</label> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col"><input type="checkbox" name="rubro" value="13" {{checkornot 13 rubro }}> <label>Yesería </label></div>
+                <div class="col"></div>
+                <div class="col"></div>
+                <div class="col"></div>
+            </div>
+        </div>
+    </div>
+    <br><br>
+    <input class="btn btn-success " type="submit" value="AGREGAR">
+</form> 

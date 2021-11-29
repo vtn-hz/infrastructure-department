@@ -1,22 +1,127 @@
-<h1>Index</h1><br>
 {{#if user}}
-    {{#if (isVip user.ID_ROL)}}
-        <h1>User Vip</h1><br>
-        <a href="/about">About</a> <a href="/allusers/">All Users</a>
-        <br>
-        <a href="/allcontratista">Lista de Contratistas</a> <a href="/allusers/">All Users</a>
-        <br><a href="/allinstitucion">Lista de Escuelas</a>
+    {{#if (isVip user.ID_ROL)}} 
+
+        <!-- <div id="bg" class="img-fluid max-width">
+            <img src="https://wallpapers777.com/wallpapers/big/background_mokh_derevya_les_1135411_pic_image_wallpaper_big_1920x1080.jpg" alt="">
+        </div> Arreglar -->
+
+
+        <div class="container">
+            <div class="row">
+                    <div class="col">
+                        <div class="py-5">
+                            <div class="row">
+                                <div class="col-lg-12 mb-12 mb-lg-12">
+                                    <div class="hover hover-2 text-white rounded"><img src="https://media.ambito.com/p/0181b30c304a8961368da5782248ca04/adjuntos/239/imagenes/039/154/0039154819/1200x1200/smart/expediente-juridicojpg.jpg" class="d-block w-100" alt="...">
+                                    <div class="hover-overlay"></div>
+                                    <div class="hover-2-content px-5 py-4">
+                                        <a href="/allexpediente/"><h3 class="hover-2-title text-uppercase font-weight-bold mb-0"> <span class="font-weight-light"></span>EXPEDIENTES</h3> </a>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="py-5">
+                            <div class="row">
+                                <div class="col-lg-12 mb-12 mb-lg-12">
+                                    <div class="hover hover-2 text-white rounded"> <a href="/allcontratista/" ><img src="https://media.ambito.com/p/e0ec784796bbb9905f75e25d370942c1/adjuntos/239/imagenes/039/281/0039281573/1200x1200/smart/obras-tres-febrerojpeg.jpeg" class="d-block w-100" class="d-block w-100" alt="..."></a>
+                                    <div class="hover-overlay"></div>
+                                    <div class="hover-2-content px-5 py-4">
+                                        <a href="/allcontratista/"><h3 class="hover-2-title text-uppercase font-weight-bold mb-0"> <span class="font-weight-light"></span>CONTRATISTAS</h3></a>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-lg-8 mb-8 mb-lg-8">
+                    <div class="hover hover-2 text-white rounded"> <a href="/allinstitucion/" ><img src="https://www.debate.com.mx/__export/1593462807055/sites/debate/img/2020/06/29/suspenden_a_directora_hispana_de_escuela_por_discriminar_a_nixo_afroamericano_1_crop1593462805828.jpg_423682103.jpg" class="d-block w-100" class="d-block w-100" alt="..."></a>
+                    <div class="hover-overlay"></div>
+                    <div class="hover-2-content px-5 py-4">
+                        <a href="/allinstitucion/"><h3 class="hover-2-title text-uppercase font-weight-bold mb-0"> <span class="font-weight-light"></span>ESCUELAS</h3></a>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-2"></div>
+            </div>
+        </div>
+
+
+
+
+            
+
     {{else}}
-        <h1>User Normal</h1><br>
+        <!--<h1>User Normal</h1><br>
         <a href="/about">About</a>
-        <br>
+        <br>-->
     {{/if}}
 {{else}}
-<div style="text-align: center;">
-    <h1>LOGIN "EXAMPLE"</h1><br>
-    <h1>Prueb</h1><br>
-    <h1>1234</h1>
-</div>
+<script>active("SIGN IN");</script>
+<link rel="stylesheet" href="/css/signin.css">
+<br>
+<form action="/signin" method="POST">
+    <div class="login-wrap">
+        <div class="login-html">
+            <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
+            <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab"><!--Sign Up--></label>
+            <div class="login-form">
+                <div class="sign-in-htm">
+                    <div class="group">
+                        <label for="user" class="label">Username</label>
+                        <input id="user" name="name" type="text" class="input">
+                    </div>
+                    <div class="group">
+                        <label for="pass" class="label">Password</label>
+                        <input id="pass" type="password" name="password"class="input" data-type="password">
+                    </div>
+                    <!--<div class="group">
+                        <input id="check" type="checkbox" class="check" checked>
+                        <label for="check"><span class="icon"></span> Keep me Signed in</label>
+                    </div>-->
+                    <div class="group">
+                        <input type="submit" class="button" value="Sign In">
+                    </div>
+                    <!--<div class="hr"></div>
+                    <div class="foot-lnk">
+                        <a href="#forgot">Forgot Password?</a>
+                    </div>-->
+                </div>
+                <!--<div class="sign-up-htm">
+                    <div class="group">
+                        <label for="user" class="label">Username</label>
+                        <input id="user" type="text" class="input">
+                    </div>
+                    <div class="group">
+                        <label for="pass" class="label">Password</label>
+                        <input id="pass" type="password" class="input" data-type="password">
+                    </div>
+                    <div class="group">
+                        <label for="pass" class="label">Repeat Password</label>
+                        <input id="pass" type="password" class="input" data-type="password">
+                    </div>
+                    <div class="group">
+                        <label for="pass" class="label">Email Address</label>
+                        <input id="pass" type="text" class="input">
+                    </div>
+                    <div class="group">
+                        <input type="submit" class="button" value="Sign Up">
+                    </div>
+                    <div class="hr"></div>
+                    <div class="foot-lnk">
+                        <label for="tab-1">Already Member?</a>
+                    </div>
+                </div>-->
+            </div>
+        </div>
+    </div>
+</form> 
 {{/if}}
 
  

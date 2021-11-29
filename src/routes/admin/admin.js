@@ -58,6 +58,6 @@ Object.assign(router, require('./admin_actions/contratista.js'));
 Object.assign(router, require('./admin_actions/escuela.js'));
 
 //-Expediente-//
-Object.assign(router, require('./admin_actions/escuela.js'));
+Object.assign(router, require('./admin_actions/expediente.js'));
 
 module.exports = router;

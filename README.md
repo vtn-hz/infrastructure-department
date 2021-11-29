@@ -6,6 +6,6 @@
 
 
 ### Propietarios
-- ```Valentino HND```
+- ```Valentino HNZ```
 - ```Franco GND```
-- ```Agustín CTN```
+- ```?¿``` 

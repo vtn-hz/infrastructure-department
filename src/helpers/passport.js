@@ -13,7 +13,7 @@ passport.use('local.signin', new LocalStrategy({
         const user = rows[0];
         const validPassword = await encdec.matchPassword(password, user.password);
         if(validPassword){
-            done(null, user, Req.flash('success', 'Welcome '+ user.nombre));
+            done(null, user, Req.flash('success', 'Bienvenido inspector/a!'));
         }else{
             done(null, false, Req.flash('error', 'Incorrect Password!'));
         }

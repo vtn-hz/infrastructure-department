@@ -27,10 +27,10 @@ router.post('/signin', (Req, Res, next) => {
     })(Req, Res, next);
 });
 
-router.get('/profile', isauth.isLoggedIn, (Req, Res) => {
+/*router.get('/profile', isauth.isLoggedIn, (Req, Res) => {
     Res.render('users/profile');
 });
-
+*/
 router.get('/logout', (Req, Res) =>{
     Req.logOut();
     Res.redirect('/signin');

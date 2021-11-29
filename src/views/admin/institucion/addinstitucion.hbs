@@ -1,50 +1,158 @@
-<h2>INGRESE</h2>
+
 <form action="/add/institucion" method="POST">
-    <label for="NAME">Nivel/Modalidad: </label>
-    <input type="radio" id="jardin" name="NIVEL" value="1" required> <label>Jardin</label>
-    <input type="radio" id="primaria" name="NIVEL" value="2"> <label>Escuela Primaria</label>
-    <input type="radio" id="secundaria" name="NIVEL" value="3"> <label>Escuela Secundaria</label>
-    <input type="radio" id="adultos" name="NIVEL" value="4"> <label>Adultos</label>
-    <input type="radio" id="especial" name="NIVEL" value="5"> <label>Escuela Especial</label>
-    <input type="radio" id="psicologia" name="NIVEL" value="6"> <label>Escuela de Psicologia</label>
-    <br>
+    <div class="container">
+        <h2>INGRESE</h2>
+        <div class="row">   
+            <div class="col-1">
+                <label for="NAME">Nivel/Modalidad: </label>
+            </div>
+            <div class="col">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-1">
+                            <input  class="form-check-input" type="radio" id="jardin" name="NIVEL" value="1" required> <label class="form-label">Jardin </label>
+                        </div>
+                        <div class="col">
+                            <input  class="form-check-input" type="radio" id="primaria" name="NIVEL" value="2"> <label class="form-label">Escuela Primaria </label>
+                        </div>
+                        <div class="col">
+                            <input  class="form-check-input" type="radio" id="secundaria" name="NIVEL" value="3"> <label class="form-label">Escuela Secundaria </label>
+                        </div>
+                        <div class="col">
+                            <input  class="form-check-input" type="radio" id="adultos" name="NIVEL" value="4"> <label class="form-label">Adultos </label>
+                        </div>
+                        <div class="col">
+                            <input  class="form-check-input" type="radio" id="especial" name="NIVEL" value="5"> <label class="form-label">Escuela Especial </label>
+                        </div>
+                        <div class="col-3">
+                            <input  class="form-check-input" type="radio" id="psicologia" name="NIVEL" value="6"> <label class="form-label">Escuela de Psicologia </label>      
+                        </div>
+                                     
+  
+                    </div>
+                </div>
+                
 
-    <label>CUE: </label> <input type="text" name="CUE" id="CUE" required>
-    <label>ESTABLECIMIENTO: </label> <input type="text" name="ESTABLECIMIENTO" id="ESTABLECIMIENTO" required> <!--Hacer autocompletado segun el tipo-->
-    <br>
-    <label>Nombre Escuela: </label> <input type="text" name="nombre_escuela" id="nombre_escuela">
-    <br><br>
-    <label>Direccion: </label> <input placeholder="Calle" name="nmb_calle" id="nmb_calle"> <input placeholder="Nro" type="number" name="nro_calle" id="nro_calle">
-    <br>
-    <input type="radio" id="mdp" name="LOCALIDAD" value="1" required> <label>Mar del Plata</label>
-    <input type="radio" id="batan" name="LOCALIDAD" value="2"> <label>Batan</label>
-    <input type="radio" id="santaclara" name="LOCALIDAD" value="3"> <label>Santa Clara</label>
-    <input type="radio" id="santaclara" name="LOCALIDAD" value="4"> <label>Laguna de los Padres</label>
-    <br><br>
-    <br>
+               
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
+            <div class="col-2">
+               <label class="form-label">DATOS ESPECIFICOS:</label>   
+            </div>
+            <div class="col">           
+                 <div class="input-group">
+           
+                    <input type="text" name="CUE" id="CUE" class="form-control" placeholder="CUE" required>
+                    <input type="text" name="ESTABLECIMIENTO" id="ESTABLECIMIENTO"  class="form-control" placeholder="Codigo de establecimiento..." required>
+                </div>
+            </div>
+            
+               
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-2">
+                <label class="form-label">Nombre Escuela: </label>
+            </div>
+            <div class="col">
+                <input type="text" name="nombre_escuela" id="nombre_escuela" class="form-control">
+            </div>
+            <div class="col-6">
 
-    <label>Numero de Telefono de la Escuela: </label><input placeholder="Telefono" type="number" name="telefono_escuela" required> 
-    <br><br>
-    <label>Director:</label>
-    <select name="directores" id="directores">
-        <option selected disabled>Escoja Director</option>
-        {{#each directores}}
-        <option value="{{ID_ENCARGADO}}">{{nombre}} {{apellido }}</option>
-        {{/each}}
-    </select>
-    <input value="" disabled placeholder="Telefono">
-    <input value="" disabled placeholder="Email">
+            </div>
+        </div>
+
+        <br>
+        <div class="row">
+            <div class="col-2">
+                <label class="form-label">Direccion: </label> 
+            </div>
+
+            <div class="col-6">
+                <div class="input-group">
+                    <input placeholder="Calle" name="nmb_calle" id="nmb_calle" class="form-control">  
+                    <input placeholder="Nro" type="number" name="nro_calle" id="nro_calle" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2">
+
+            </div>
+            <div class="col">
+                <input type="radio" id="mdp" name="LOCALIDAD" value="1" required> <label>Mar del Plata</label>
+                <input type="radio" id="batan" name="LOCALIDAD" value="2"> <label>Batan</label>
+                <input type="radio" id="santaclara" name="LOCALIDAD" value="3"> <label>Santa Clara</label>
+                <input type="radio" id="santaclara" name="LOCALIDAD" value="4"> <label>Laguna de los Padres</label>
+            </div>
+        </div>
+
+        <br>
+        <div class="row">
+            <div class="col-2">
+                <label>Numero de Telefono de la Escuela: </label>
+            </div>
+
+            <div class="col-4">
+                <input placeholder="Telefono" type="number" name="telefono_escuela" class="form-control" required> 
+            </div>
+        </div>
+        <br><br><br>
+        <div class="row">
+            <div class="col-2">
+                <label>Director:</label>
+            </div>
+            <div class="col-4">
+                <select  class="form-select" name="directores" id="directores">
+                    <option selected disabled>Escoja Director</option>
+                    {{#each director}}
+                    <option value="{{ID_ENCARGADO}}">{{nombre}} {{apellido }}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="col">
+                <div class="input-group">
+                    <input value="" disabled placeholder="Telefono" class="form-control">
+                    <input value="" disabled placeholder="Email" class="form-control">
+                </div>
+            </div>
+
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-2">
+                <label>Inspector:</label>
+            </div>
+            <div class="col-4">
+                <select class="form-select" name="inspectores" id="inspectores">
+                    <option selected disabled>Escoja Director</option>
+                    {{#each inspector}}
+                    <option value="{{ID_ENCARGADO}}">{{nombre}} {{apellido }}</option>
+                    {{/each}}
+                </select>
+            </div>
+
+            <div class="col">
+                <div class="input-group">
+                    <input value="" disabled placeholder="Telefono" class="form-control">
+                    <input value="" disabled placeholder="Email" class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <br><br><input class="btn btn-success" type="submit" value="AGREGAR">
+
+    </div>
+
+
+
+   
+    
+   
     <!-- Estaria bueno que toda la información segun el selected se ponga en ese input... Si ven esto me avisan y me ayudan a hacerlo-->
     <br><br>
-    <label>Inspector:</label>
-    <select name="inspectores" id="inspectores">
-        <option selected disabled>Escoja Director</option>
-        {{#each inspectores}}
-        <option value="{{ID_ENCARGADO}}">{{nombre}} {{apellido }}</option>
-        {{/each}}
-    </select>
-    <input value="" disabled placeholder="Telefono">
-    <input value="" disabled placeholder="Email">
-
-    <br><br><input type="submit" value="ENVIAR">
+    
+    
 </form> 

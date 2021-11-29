@@ -1,0 +1,179 @@
+<form class="container" action="/edit/expediente/{{EXP.ID_EXP}}" method="POST">
+    <div class="row">
+        <div class="col">
+            <h2>INGRESE</h2> 
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-2">
+            <label class="control-label">Fecha del Expediente: </label> 
+        </div>
+        <div class="col-3">
+            <input class="form-control" type="date" value="{{ toFormatDef EXP.fecha_pedido}}" name="fecha_pedido" required>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-2">
+     <label class="control-label"> Posponer a </label>
+        </div>
+     <div class="col-3">
+     <input class="form-control" type="date" name="postpone_date" value="{{toFormatDef EXP.postpone_date}}">
+     </div>
+     </div>
+  
+    <br>
+ <div class="row">
+    <div class="col-2">
+    <label class="control-label">Fecha del Contrato </label>
+        </div>
+    <div class="col-3">
+    <input class="form-control" type="date"  value="{{toFormatDef EXP.fecha_contrato}}" name="fecha_contrato" required> 
+     </div>
+     </div>
+
+
+ <div class="row">
+    <div class="col-2">
+    <label class="control-label"> Fecha de Garantia </label>
+    </div>
+     <div class="col-3">
+    <input class="form-control" type="date" name="fecha_garantia" value="{{toFormatDef EXP.fecha_garantia}}">
+       </div>
+</div>
+    <br>
+    <br>
+
+ <div class="row">
+    <div class="col-2">
+     <label class="control-label">Oficina: </label>
+    </div>
+    
+    <div class="col">
+            <select class="form-control" name="ID_OFICINA" id="ID_OFICINA" required>
+        {{#each oficina}}
+            <option value="{{ID_OFICINA}}" {{selectedornot ID_OFICINA ../EXP.ID_OFICINA}}>{{tipo}}</option>                                                                                                                                  
+        {{/each}}
+            <option value="otro">Otro</option>
+            </select> 
+    </div>
+
+    <div class="col">
+         <input class="form-control" placeholder="Otro..." name="otra_oficina"> 
+    </div>
+
+
+</div>
+   
+
+       
+    
+    <br><br>
+    <div class="row">
+    <table>
+        <tr>
+            <td>
+               
+                 <label>Informe Tecnico: </label>
+            </td>
+            <td>
+                 <label>Obra realizada: </label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <textarea class="form-control" name="informe_tecnico" rows="7">                                                                                                               
+                    {{EXP.informe_tecnico}}
+                </textarea>
+            </td>
+            <td>
+                <textarea class="form-control" name="obra_realizada" rows="7" required >                                                                                                               
+                    {{EXP.obra_realizada}}
+                </textarea>
+            </td>
+        </tr>
+       
+      
+    </table>
+
+    
+    </div>
+    <br><br>
+    <label>Contratación:</label><br>
+    <div>
+    <input type="radio" value="1" name="ID_CONTRATACION" {{checkornot 1 EXP.ID_CONTRATACION}} required> Directa
+    <input type="radio" value="2" name="ID_CONTRATACION" {{checkornot 2 EXP.ID_CONTRATACION}}> A Cotizar
+    </div>
+    <br><br>
+    <label>Fondo:</label><br>
+    <div>
+    <input type="radio" value="1" name="ID_FONDO"  {{checkornot 1 EXP.ID_FONDO}} required> Cuff
+    <input type="radio" value="2" name="ID_FONDO" {{checkornot 2 EXP.ID_FONDO}} > Compensador
+    <input type="radio" value="3" name="ID_FONDO" {{checkornot 3 EXP.ID_FONDO}} > Otro
+    </div>
+    <br><br>
+
+
+<div class="row">
+    <div class="col-2">
+    <label class="control-label">Monto: </label>
+    </div>
+    <div class="col-2">
+    <input class="form-control" type="number" name="monto_numeros" value="{{EXP.monto_numeros}}" placeholder="Monto en Números" required>
+    </div></div>
+    <br><br>    
+
+
+<div class="row">
+    <div class="col-2">
+    <label class="control-label">Institución:</label>
+      </div>
+       <div class="col-2">
+    <select class="form-control" name="inst" id="inst">
+        {{#each inst}}
+        <option value="{{CUE}}###{{ID_EST}}" {{selectedornot ID_EST ../EXP.ID_EST}} >{{nombre_establecimiento}}</option>
+        </div>
+        {{/each}}
+    </select>
+    </div>
+
+    <br><br>
+
+
+<div class="row">
+    <div class="col-2">
+    <label  class="control-label" >Contratista:</label>
+    </div>
+     <div class="col-2">
+            <select class="form-control" name="contratista" id="contratista" required>
+        {{#each contratista}}
+        <option value="{{ID_CONT}}" {{selectedornot ID_CONT ../EXP.ID_CONT}} >{{cont_name}}</option>
+        {{/each}}
+    </select>
+     </div>
+
+    <div class="col-4">
+         <input type="number" class="form-control" name="presupuesto_entregado"  value="{{EXP.presupuesto_entregado}}" placeholder="Presupuesto Entregado" required>
+    </div>
+</div>
+
+   
+
+<br><br>
+<br><br>
+<div class="row">
+    <div class="col-4">
+                <select class="form-select" name="ID_ESTADO" id="ID_ESTADO" required>
+                <option value="1" {{selectedornot 1 EXP.ID_ESTADO}} >En Cotización</option>
+                <option value="2" {{selectedornot 2 EXP.ID_ESTADO}} >En Proceso</option>
+                <option value="3" {{selectedornot 3 EXP.ID_ESTADO}} >Finalizada</option>
+                <option value="4" {{selectedornot 4 EXP.ID_ESTADO}} >Sin Asignar</option>
+                </select>
+    </div>
+
+    <div class="col-4">
+        <input class="btn btn-primary" type="submit" value="EDITAR">
+    </div>
+</div>        
+ 
+</form> 
+

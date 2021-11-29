@@ -1,48 +1,157 @@
-<h2>INGRESE</h2>
 <form action="/edit/institucion/{{institucion.CUE}}/{{institucion.ID_EST}}" method="POST">
-    <label for="NAME">Nivel/Modalidad: </label>
-    <input type="radio" id="jardin" name="NIVEL" value="1" required {{checkornot 1 institucion.ID_MODALIDAD}}> <label>Jardin</label>
-    <input type="radio" id="primaria" name="NIVEL" value="2" {{checkornot 2 institucion.ID_MODALIDAD}}> <label>Escuela Primaria</label>
-    <input type="radio" id="secundaria" name="NIVEL" value="3" {{checkornot 3 institucion.ID_MODALIDAD}}> <label>Escuela Secundaria</label>
-    <input type="radio" id="adultos" name="NIVEL" value="4" {{checkornot 4 institucion.ID_MODALIDAD}}> <label>Adultos</label>
-    <input type="radio" id="especial" name="NIVEL" value="5" {{checkornot 5 institucion.ID_MODALIDAD}}> <label>Escuela Especial</label>
-    <input type="radio" id="psicologia" name="NIVEL" value="6" {{checkornot 6 institucion.ID_MODALIDAD}}> <label>Escuela de Psicologia</label>
-    <br>
-    <label>CUE: </label> <input type="text" name="CUE" id="CUE" required value="{{institucion.CUE}}">
-    <label>ESTABLECIMIENTO: </label> <input type="text" name="ESTABLECIMIENTO" id="ESTABLECIMIENTO" value="{{institucion.ID_EST}}" required> <!--Hacer autocompletado segun el tipo-->
-    <br>
-    <label>Nombre Escuela: </label> <input type="text" name="nombre_escuela" id="nombre_escuela" value="{{institucion.nombre_establecimiento}}">
-    <br><br>
-    <label>Direccion: </label> <input placeholder="Calle" name="nmb_calle" id="nmb_calle" value="{{institucion.nmb_calle}}"> <input placeholder="Nro" type="number" name="nro_calle" id="nro_calle" value="{{institucion.nro_calle}}">
-    <br>
-    <input type="radio" id="mdp" name="LOCALIDAD" value="1" required {{checkornot 1 institucion.ID_LOCALIDAD}}> <label>Mar del Plata</label>
-    <input type="radio" id="batan" name="LOCALIDAD" value="2" {{checkornot 2 institucion.ID_LOCALIDAD}}> <label>Batan</label>
-    <input type="radio" id="santaclara" name="LOCALIDAD" value="3" {{checkornot 3 institucion.ID_LOCALIDAD}}> <label>Santa Clara</label>
-    <input type="radio" id="santaclara" name="LOCALIDAD" value="4" {{checkornot 4 institucion.ID_LOCALIDAD}}> <label>Laguna de los Padres</label>
-    <br><br>
-    <br>
-    <label>Numero de Telefono de la Escuela: </label><input placeholder="Telefono" type="number" name="telefono_escuela" required value="{{institucion.telefono}}"> 
-    <br><br>
-    <label>Director:</label>
-    <select name="directores" id="directores">
-        <option selected disabled>Escoja Director</option>
-        {{#each directores}}
-        <option value="{{ID_ENCARGADO}}" {{selectedornot ID_ENCARGADO ../institucion.0.ID_ENCARGADO}}  {{selectedornot ID_ENCARGADO ../institucion.1.ID_ENCARGADO}}>{{nombre}} {{apellido}}</option>
-        {{/each}}
-    </select>
-    <input value="" disabled placeholder="Telefono">
-    <input value="" disabled placeholder="Email">
+    <div class="container">
+        <h2>INGRESE</h2>
+        <div class="row">   
+            <div class="col-1">
+                <label for="NAME">Nivel/Modalidad: </label>
+            </div>
+            <div class="col">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-1">
+                            <input  class="form-check-input" type="radio" id="jardin" name="NIVEL" value="1"  {{checkornot 1 institucion.ID_MODALIDAD}} required> <label class="form-label">Jardin </label>
+                        </div>
+                        <div class="col">
+                            <input  class="form-check-input" type="radio" id="primaria" name="NIVEL" value="2" {{checkornot 2 institucion.ID_MODALIDAD}}> <label class="form-label">Escuela Primaria </label>
+                        </div>
+                        <div class="col">
+                            <input  class="form-check-input" type="radio" id="secundaria" name="NIVEL" value="3" {{checkornot 3 institucion.ID_MODALIDAD}}> <label class="form-label">Escuela Secundaria </label>
+                        </div>
+                        <div class="col">
+                            <input  class="form-check-input" type="radio" id="adultos" name="NIVEL" value="4" {{checkornot 4 institucion.ID_MODALIDAD}}> <label class="form-label">Adultos </label>
+                        </div>
+                        <div class="col">
+                            <input  class="form-check-input" type="radio" id="especial" name="NIVEL" value="5" {{checkornot 5 institucion.ID_MODALIDAD}}> <label class="form-label">Escuela Especial </label>
+                        </div>
+                        <div class="col-3">
+                            <input  class="form-check-input" type="radio" id="psicologia" name="NIVEL" value="6" {{checkornot 6 institucion.ID_MODALIDAD}}> <label class="form-label">Escuela de Psicologia </label>      
+                        </div>
+                                     
+  
+                    </div>
+                </div>
+                
+
+               
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
+            <div class="col-2">
+               <label class="form-label">DATOS ESPECIFICOS:</label>   
+            </div>
+            <div class="col">           
+                 <div class="input-group">
+           
+                    <input type="text" name="CUE" id="CUE" class="form-control" placeholder="CUE" value="{{institucion.CUE}}" required>
+                    <input type="text" name="ESTABLECIMIENTO" id="ESTABLECIMIENTO"  class="form-control"  value="{{institucion.ID_EST}}"  placeholder="Codigo de establecimiento..." required>
+                </div>
+            </div>
+            
+               
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-2">
+                <label class="form-label">Nombre Escuela: </label>
+            </div>
+            <div class="col">
+                <input type="text" name="nombre_escuela" id="nombre_escuela" value="{{institucion.nombre_establecimiento}}" class="form-control">
+            </div>
+            <div class="col-6">
+
+            </div>
+        </div>
+
+        <br>
+        <div class="row">
+            <div class="col-2">
+                <label class="form-label">Direccion: </label> 
+            </div>
+
+            <div class="col-6">
+                <div class="input-group">
+                    <input placeholder="Calle" name="nmb_calle" id="nmb_calle" value="{{institucion.nmb_calle}}" class="form-control">  
+                    <input placeholder="Nro" type="number" name="nro_calle" id="nro_calle" value="{{institucion.nro_calle}}"  class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2">
+
+            </div>
+            <div class="col">
+                <input type="radio" id="mdp" name="LOCALIDAD" value="1"  {{checkornot 1 institucion.ID_LOCALIDAD}} required> <label>Mar del Plata</label>
+                <input type="radio" id="batan" name="LOCALIDAD" value="2" {{checkornot 2 institucion.ID_LOCALIDAD}}> <label>Batan</label>
+                <input type="radio" id="santaclara" name="LOCALIDAD" value="3" {{checkornot 3 institucion.ID_LOCALIDAD}}> <label>Santa Clara</label>
+                <input type="radio" id="santaclara" name="LOCALIDAD" value="4" {{checkornot 4 institucion.ID_LOCALIDAD}}> <label>Laguna de los Padres</label>
+            </div>
+        </div>
+
+        <br>
+        <div class="row">
+            <div class="col-2">
+                <label>Numero de Telefono de la Escuela: </label>
+            </div>
+
+            <div class="col-4">
+                <input placeholder="Telefono" type="number" name="telefono_escuela" class="form-control" value="{{institucion.telefono}}"  required> 
+            </div>
+        </div>
+        <br><br><br>
+        <div class="row">
+            <div class="col-2">
+                <label>Director:</label>
+            </div>
+            <div class="col-4">
+                <select  class="form-select" name="directores" id="directores">
+                    <option selected disabled>Escoja Director</option>
+                    {{#each directores}}
+                    <option value="{{ID_ENCARGADO}}" {{selectedornot ID_ENCARGADO ../institucion.0.ID_ENCARGADO}}  {{selectedornot ID_ENCARGADO ../institucion.1.ID_ENCARGADO}}>{{nombre}} {{apellido }}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="col">
+                <div class="input-group">
+                    <input value="" disabled placeholder="Telefono" class="form-control">
+                    <input value="" disabled placeholder="Email" class="form-control">
+                </div>
+            </div>
+
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-2">
+                <label>Inspector:</label>
+            </div>
+            <div class="col-4">
+                <select class="form-select" name="inspectores" id="inspectores">
+                    <option selected disabled>Escoja Director</option>
+                    {{#each inspectores}}
+                    <option value="{{ID_ENCARGADO}}" {{selectedornot ID_ENCARGADO ../institucion.0.ID_ENCARGADO}}  {{selectedornot ID_ENCARGADO ../institucion.1.ID_ENCARGADO}}>{{nombre}} {{apellido }}</option>
+                    {{/each}}
+                </select>
+            </div>
+
+            <div class="col">
+                <div class="input-group">
+                    <input value="" disabled placeholder="Telefono" class="form-control">
+                    <input value="" disabled placeholder="Email" class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <br><br><input class="btn btn-success" type="submit" value="AGREGAR">
+
+    </div>
+
+
+
+   
+    
+   
     <!-- Estaria bueno que toda la información segun el selected se ponga en ese input... Si ven esto me avisan y me ayudan a hacerlo-->
     <br><br>
-    <label>Inspector:</label>
-    <select name="inspectores" id="inspectores">
-        <option selected disabled>Escoja Inspector</option>
-        {{#each inspectores}}
-        <option value="{{ID_ENCARGADO}}" {{selectedornot ID_ENCARGADO ../institucion.0.ID_ENCARGADO}}  {{selectedornot ID_ENCARGADO ../institucion.1.ID_ENCARGADO}}>{{nombre}} {{apellido }}</option>
-        {{/each}}
-    </select>
-    <input value="" disabled placeholder="Telefono">
-    <input value="" disabled placeholder="Email">
-
-    <br><br><input type="submit" value="ENVIAR">
+    
+    
 </form> 

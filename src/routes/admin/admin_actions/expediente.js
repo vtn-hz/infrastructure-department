@@ -9,7 +9,7 @@ router.get('/allexpediente/',  /*isauth.isLoggedIn, isauth.isVip,*/ async (Req, 
 
 
     promises.push (new Promise( (resolve, reject) => {
-                pool.query('SELECT * FROM expediente', (error, results) => {
+                pool.query('SELECT * FROM expediente WHERE activo = 1', (error, results) => {
                     if(error){
                         reject(error);
                     }else{
@@ -80,6 +80,17 @@ router.get('/allexpediente/',  /*isauth.isLoggedIn, isauth.isVip,*/ async (Req, 
       })
     );
 
+    promises.push ( new Promise ((resolve, reject) => {
+        pool.query ('SELECT * FROM nro_orden', (error, results) => {
+            if (error) {
+                reject (error);
+            } else {
+                resolve (results);
+            }
+        }) 
+    })
+    );
+
     Promise.all(promises).then(values => {
         if(values[0].length){
             values[0].forEach(element => {
@@ -91,6 +102,14 @@ router.get('/allexpediente/',  /*isauth.isLoggedIn, isauth.isVip,*/ async (Req, 
 
                 values[2].find((single) => {
                     if(element.ID_EXP === single.ID_EXP){
+                        Object.assign(element, single);
+                    }
+                })
+
+
+
+                values[3].find((single) => {
+                    if(element.ID_NRORD === single.ID_NRORD_AI){
                         Object.assign(element, single);
                     }
                 })
@@ -261,7 +280,7 @@ router.post('/add/expediente', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, R
                 reject(error);
             }else{
                 if(results.length){
-                    nro_orden = results[0]+1;
+                    nro_orden = results[0].nro_orden+1;
                 }else{
                     nro_orden = 1;
                 }
@@ -370,6 +389,343 @@ router.post('/add/expediente', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, R
 });
 
 //-EDIT-//
+router.get('/edit/expediente/:ID_EXP', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, Res) => { 
+    const promises = [];
+    const ID_EXP = Req.params.ID_EXP;
+    console.log(ID_EXP);
+
+    promises.push (new Promise( (resolve, reject) => {
+                pool.query('SELECT * FROM institucion', (error, results) => {
+                    if(error){
+                        reject(error);
+                    }else{
+                        if(results.length){
+                            resolve(results);
+                        }
+                    }
+                });
+
+            })
+    );
+    
+
+            
+
+
+    promises.push (new Promise( (resolve, reject) => {
+        pool.query('SELECT * FROM contratista', async (error, results) => {
+                if(error){
+                    reject(error);
+                }else if(results.length){
+                    const name_promises = [];
+                    if(results.length > 1){
+                        results.forEach(element => {
+                            name_promises.push(
+                                new Promise( (resolve, reject) => {
+                                    pool.query('SELECT * FROM contratista_nombre WHERE ID_CONTN = ?', [element.ID_CONTN], (error, results) => {
+                                        if(error){
+                                            reject(error);
+                                        }else{
+                                            if(results.length){
+                                                element.cont_name = results[0].nombre + " " +  results[0].apellido;
+                                                resolve(true);
+                                            }
+                                        }
+                                    });
+                                })
+                            )
+                        });      
+                    }else{
+                        name_promises.push(
+                            new Promise( (resolve, reject) => {
+                                pool.query('SELECT * FROM contratista_nombre WHERE ID_CONTN = ?', [results[0].ID_CONTN], (error, results) => {
+                                    if(error){
+                                        reject(error);
+                                    }else{
+                                        if(results.length){
+                                            results[0].cont_name = results[0].nombre + " " +  results[0].apellido;
+                                            resolve(results);
+                                        }
+                                    }
+                                });
+                            })
+                        )
+                    }
+
+                    Promise.all(name_promises).then(() => {
+                        resolve(results);
+                    });
+                }
+        })
+    }));
+
+
+    promises.push(
+        new Promise((resolve, reject) =>{
+            pool.query('SELECT * FROM tipo_oficina', async (error, results) => {
+                if(error){
+                    reject(error);
+                }else{
+                    resolve(results);
+                }
+            })
+        })
+    );
+
+    promises.push(
+        new Promise((resolve, reject) =>{
+            pool.query('SELECT * FROM expediente WHERE ID_EXP = ?', [ID_EXP], async (error, results) => {
+                if(error){
+                    reject(error);
+                }else{
+                    const ret_obj = {};
+                    if (results.length > 0) {
+                        Object.assign(ret_obj, results[0]);
+                        pool.query('SELECT * FROM obra WHERE ID_OBRA = ?', [results[0].ID_OBRA], async (error, res) => {
+                                if(error){
+                                    throw error;
+                                }else{
+                                    if ( res.length > 0) { 
+                                        Object.assign(ret_obj, res[0]);
+                                        pool.query('SELECT * FROM fecha_garantia WHERE ID_OBRA = ?', [res[0].ID_OBRA], async (error, r) => {
+                                            if(error){
+                                                throw error;
+                                            }else{
+                                                if (r.length > 0) {
+                                                    Object.assign(ret_obj, r[0]);
+                                                } resolve (ret_obj) ;
+                                            }
+                                        })
+                                    } else {
+                                        resolve (ret_obj) ;
+                                    }
+                                }
+
+                        })
+                    } else {
+                        resolve (ret_obj) ;
+                    }
+  
+                }
+            })
+        })
+    );
+
+    promises.push(
+        new Promise((resolve, reject) =>{
+            pool.query('SELECT * FROM exp_con WHERE ID_EXP = ?', [ID_EXP], async (error, results) => {
+                if(error){
+                    reject(error);
+                }else{
+                    resolve(results[0]);
+                }
+            })
+        })
+    );
+    
+
+    // :)
+    Promise.all(promises).then(values => {
+        const  inst = values[0];
+        const contratista = values[1];
+        const oficina = values[2];
+
+        const EXP = values [3];
+        Object.assign(EXP,  values [4]);
+        console.log(EXP);
+
+
+        
+        Res.render('admin/expediente/editexpediente', {inst, contratista, oficina, EXP});
+    });
+});
+
+router.post('/edit/expediente/:ID_EXP', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, Res) => {
+    if(
+        Req.body.fecha_pedido != '' &&
+        Req.body.fecha_contrato != '' &&
+        Req.body.ID_OFICINA != '' &&
+        Req.body.obra_realizada != '' &&
+        Req.body.ID_CONTRATACION != '' &&
+        Req.body.ID_FONDO != '' &&
+        Req.body.monto_numeros != '' &&
+        Req.body.inst != '' &&
+        Req.body.contratista != '' &&
+        Req.body.presupuesto_entreado != '' &&
+        Req.body.ID_ESTADO != ''
+    )   {
+        
+        const FIR_IDEXP = Req.params.ID_EXP;
+        const promises = [];
+        const inst = Req.body.inst.split("###");
+    
+
+        
+
+
+        const Single = new Promise ((Resolve, Reject) => {
+            pool.query('SELECT * FROM expediente WHERE ID_EXP = ?', [FIR_IDEXP], (error, results) => {
+                if (error) {
+                    Reject (error) ;
+                } else {
+                    if (!results.length) {
+                        Reject ("No se encuentran los valores") ;
+                    } else {
+                        Resolve (results[0]) ;
+                    }
+                    
+                }
+            })
+        }).then(
+            
+            EXP => {
+                var single_promise = new Promise((res) => {res();});;
+                promises.push (new Promise( (resolve, reject) => {
+                    if(Req.body.ID_OFICINA === 'otro' && Req.body.otra_oficina != ''){
+                        if(Req.body.otra_oficina === '' || Req.body.otra_oficina === undefined) {
+                            console.log("Bug");
+                            reject('Es obligatoria la oficina'); 
+                            Req.flash('error', 'Es obligatoria la oficina');
+                            Res.redirect('/add/expediente');
+                        }
+            
+                        single_promise = new Promise ((res, rej) => { pool.query('INSERT INTO tipo_oficina (tipo) VALUES (?)', [Req.body.otra_oficina], (error, results) => {
+                                if(error){
+                                    rej(error);
+                                }else{
+                                    res(results.insertId);
+                                }
+                            })
+                        })
+                    }
+            
+            
+                    const OBRA = {
+                        ID_ESTADO: Req.body.ID_ESTADO,
+                        fecha_contrato: Req.body.fecha_contrato,
+                        monto_numeros: Req.body.monto_numeros,
+                        ID_CONTRATACION: Req.body.ID_CONTRATACION,
+                        obra_realizada: Req.body.obra_realizada,
+                        ID_FONDO: Req.body.ID_FONDO,
+                        ID_OFICINA: Req.body.ID_OFICINA,
+                    }
+            
+            
+                    single_promise.then( ID_FONDO => {
+                        if(ID_FONDO){
+                            OBRA.ID_OFICINA = ID_FONDO;
+                        }   
+            
+                        console.log(OBRA);
+            
+            
+                        pool.query('UPDATE obra SET ? WHERE ID_OBRA = ?', [OBRA, EXP.ID_OBRA], (error, results) => {
+                            if(error){
+                                reject(error);
+                            }else{            
+                                resolve(EXP.ID_OBRA);
+                            }
+                        });
+                    })
+            
+                    })
+                );
+
+
+                promises.push (
+                    new Promise ((Resolve, Reject) => {
+                        pool.query('SELECT * FROM fecha_garantia WHERE ID_OBRA = ? ', [EXP.ID_OBRA], (error, results) => {
+                            if (error) {
+                                Reject (error) ;
+                            } else {
+                                if (results.length) {
+                                    if(Req.body.fecha_garantia != ''){
+                                        pool.query('UPDATE fecha_garantia SET fecha_garantia = ? WHERE ID_OBRA = ?', [Req.body.fecha_garantia, EXP.ID_OBRA]);
+                                    } else {
+                                        pool.query('DELETE FROM fecha_garantia WHERE ID_OBRA = ?', [EXP.ID_OBRA]);
+                                    }
+                                } else {
+                                    if(Req.body.fecha_garantia != ''){
+                                        pool.query('INSERT INTO fecha_garantia (ID_OBRA, fecha_garantia) VALUES (?, ?)', [EXP.ID_OBRA, Req.body.fecha_garantia]);
+                                    }
+                                }
+
+
+                                Resolve();
+                            }
+                        })
+                    })
+                ) ;  
+
+                Promise.all(promises).then(IDS => {
+                    const EXP = {
+                        informe_tecnico:Req.body.informe_tecnico,
+                        postpone_date:(Req.body.postpone_date === '')? null : Req.body.postpone_date,
+                        CUE:inst[0],
+                        ID_EST:inst[1],
+                        ID_OBRA:IDS[0],
+                        ID_ESTADO:Req.body.ID_ESTADO
+                    }
+                    //console.log(EXP);
+                    const one = new Promise ((Resolve, Reject) => {
+                        pool.query('SELECT * FROM exp_con WHERE ID_EXP = ?', [FIR_IDEXP], (error, results) => {
+                            if (error) {
+                                throw error;
+                            } else {
+                                if (results.length) {
+                                    pool.query('UPDATE exp_con SET ID_CONT = ?, ID_EXP = ?, presupuesto_entregado = ? WHERE ID_EXP = ?', [Req.body.contratista, FIR_IDEXP, Req.body.presupuesto_entregado, FIR_IDEXP], (error) => {
+                                        Resolve();
+                                    });
+                                } else {
+                                    pool.query('INSERT INTO exp_con (ID_CONT, ID_EXP, presupuesto_entregado) VALUES (?, ?, ?)', [Req.body.contratista, FIR_IDEXP, Req.body.presupuesto_entregado], (error) => {
+                                        Resolve();
+                                    });
+                                }
+                            }
+                        });
+                   
+                        
+                        
+                    })
+
+                    pool.query('UPDATE expediente SET ? WHERE ID_EXP = ?', [EXP, FIR_IDEXP], (error) => {
+                        if(error){
+                            throw error;
+                        }else{
+                            Promise.resolve(one).then(function(){
+                                Req.flash('success', 'Se modifico el expediente correctamente...');
+                                Res.redirect('/allexpediente/');
+                            })
+
+                        }
+                    });
+                });
+            
+
+
+            }
+        )
+    
+    }else{  
+        Req.flash('error', 'Ingrese todos los datos requeridos!');
+        Res.redirect('/add/expediente');
+    }
+    
+});
+
+//-DELETE-//
+router.get('/delete/expediente/:ID_EXP', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, Res) => {
+    const ID = Req.params.ID_EXP;
+    pool.query('UPDATE expediente SET activo = 0 WHERE ID_EXP = ?', [ID], function(error) {
+        if (error){ throw error; }
+        else {
+            Req.flash('success', 'Se elimino el expediente correctamente...');
+            Res.redirect('/allexpediente/');
+        }
+    })
+});
+
+
 
 
 module.exports = router;
