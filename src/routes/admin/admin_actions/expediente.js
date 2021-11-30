@@ -42,7 +42,7 @@ router.get('/allexpediente/',  /*isauth.isLoggedIn, isauth.isVip,*/ async (Req, 
                         results.forEach(element => {
                             promises_expcon.push(
                                 new Promise((res, rej) => {
-                                    pool.query('SELECT * FROM contratista WHERE ID_CONT = ?', [element.ID_CONT], (error, results) => {
+                                    pool.query('SELECT * FROM contratista WHERE ID_CONT = ? AND activo = 1', [element.ID_CONT], (error, results) => {
                                         if(error){
                                             rej(error);
                                         }else{
@@ -130,7 +130,7 @@ router.get('/add/expediente', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, Re
 
 
     promises.push (new Promise( (resolve, reject) => {
-                pool.query('SELECT * FROM institucion', (error, results) => {
+                pool.query('SELECT * FROM institucion WHERE activo = 1', (error, results) => {
                     if(error){
                         reject(error);
                     }else{
@@ -148,7 +148,7 @@ router.get('/add/expediente', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, Re
 
 
     promises.push (new Promise( (resolve, reject) => {
-        pool.query('SELECT * FROM contratista', async (error, results) => {
+        pool.query('SELECT * FROM contratista WHERE activo = 1', async (error, results) => {
                 if(error){
                     reject(error);
                 }else if(results.length){
@@ -395,7 +395,7 @@ router.get('/edit/expediente/:ID_EXP', /*isauth.isLoggedIn, isauth.isVip,*/async
     console.log(ID_EXP);
 
     promises.push (new Promise( (resolve, reject) => {
-                pool.query('SELECT * FROM institucion', (error, results) => {
+                pool.query('SELECT * FROM institucion WHERE activo = 1', (error, results) => {
                     if(error){
                         reject(error);
                     }else{
@@ -413,7 +413,7 @@ router.get('/edit/expediente/:ID_EXP', /*isauth.isLoggedIn, isauth.isVip,*/async
 
 
     promises.push (new Promise( (resolve, reject) => {
-        pool.query('SELECT * FROM contratista', async (error, results) => {
+        pool.query('SELECT * FROM contratista WHERE activo = 1', async (error, results) => {
                 if(error){
                     reject(error);
                 }else if(results.length){

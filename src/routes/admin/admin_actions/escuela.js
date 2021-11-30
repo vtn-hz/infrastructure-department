@@ -96,7 +96,9 @@ router.get('/add/institucion', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, R
                                             }
                                         }
                                     });
-                                }
+                                } else {
+									 Resolve({});
+								}
                             })});
 
 
@@ -108,10 +110,14 @@ router.get('/add/institucion', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, R
                                         } else {
                                             if (results.length) {
                                                 Resolve (results[0]) ;
-                                            }
+                                            } else {
+												 Resolve({});
+											}
                                         }
                                     });
-                                }
+                                } else{
+									Resolve({});
+								}
                             })});
 
                             Promise.all ([TEL, EMAIL]) .then (VALUES => {
@@ -133,10 +139,14 @@ router.get('/add/institucion', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, R
                                         } else {
                                             if (results.length) {
                                                 Resolve (results[0]) ;
-                                            }
+                                            } else {
+												Resolve({});
+											}
                                         }
                                     });
-                                }
+                                } else {
+									Resolve({});
+								}
                             })});
 
 
@@ -148,10 +158,14 @@ router.get('/add/institucion', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, R
                                         } else {
                                             if (results.length) {
                                                 Resolve (results[0]) ;
-                                            }
+                                            } else {
+												Resolve({});
+											}
                                         }
                                     });
-                                }
+                                } else {
+									Resolve({});
+								}
                             })});
 
                             Promise.all ([TEL, EMAIL]) .then (VALUES => {

@@ -1,0 +1,12 @@
+<img class="bg" id="bg-background" src="">
+<script>
+    function backgnd(src) {
+        document.getElementById("bg-background").src = src;
+        console.log(document.getElementById("bg-background").src);
+        if (src == "none") {
+            document.getElementById("bg-background").display = "none";
+        } else {
+            document.getElementById("bg-background").display = "";
+        }
+    }
+</script>

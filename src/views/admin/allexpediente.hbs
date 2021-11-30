@@ -3,6 +3,8 @@
         <!--<div id="bg" class="img-fluid max-width">
             <img src="https://fotografias.lasexta.com/clipping/cmsimages01/2018/07/24/0F8B8421-D3E2-4770-8029-28F404430B25/default.jpg?crop=4076,2293,x0,y214&width=1900&height=1069&optimize=low" alt="">
         </div> Arreglar -->
+
+<script>backgnd("/pictures/background/SS-Expediente.jpg");</script>
 <br>
 <br>
 <div class="container">
@@ -91,32 +93,29 @@
                 </tbody>
             </table>
             </div>
-            </div>
-
-
-           
+            </div>      
         </div>
     </div>
 </div>
 
 <script>
     function searcher() {
-    var input = document.getElementById('exp_searcher');
-    var filter = input.value.toUpperCase();
-    const EXP = document.getElementById("exp");
-    const TR = EXP.getElementsByTagName('tr');
+        var input = document.getElementById('exp_searcher');
+        var filter = input.value.toUpperCase();
+        const EXP = document.getElementById("exp");
+        const TR = EXP.getElementsByTagName('tr');
 
-    for (let i = 0; i < TR.length; i++) {
-        const TD = TR[i].getElementsByTagName("td");
-            for (let j = 0 ; j<TD.length ; j++) {
-                let txtValue = TD[j].textContent || TD[j].innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    TR[i].style.display = "";
-                    break;
-                } else {
-                    TR[i].style.display = "none";
-                }
-            }    
+        for (let i = 0; i < TR.length; i++) {
+            const TD = TR[i].getElementsByTagName("td");
+                for (let j = 0 ; j<TD.length ; j++) {
+                    let txtValue = TD[j].textContent || TD[j].innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        TR[i].style.display = "";
+                        break;
+                    } else {
+                        TR[i].style.display = "none";
+                    }
+                }    
         }
     }
 </script>
