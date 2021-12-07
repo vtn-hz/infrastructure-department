@@ -3,6 +3,6 @@ module.exports = {
         host: 'localhost',
         user: 'root',
         password: '',
-        database: 'proyectoss_script'
+        database: 'proyectoss_script_u'
     }
 };

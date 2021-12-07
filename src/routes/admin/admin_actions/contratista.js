@@ -4,7 +4,7 @@ const pool     =  requires.pool;
 const isauth   =  requires.isauth;
 
 // - LIST
-router.get('/allcontratista/', /*isauth.isLoggedIn, isauth.isVip,*/ async (Req, Res) => {
+router.get('/allcontratista/', isauth.isLoggedIn, isauth.isVip,  async (Req, Res) => {
     pool.query('SELECT * FROM contratista WHERE activo = 1', async (error, results) => {
         if (error) {
             throw error;
@@ -37,11 +37,11 @@ router.get('/allcontratista/', /*isauth.isLoggedIn, isauth.isVip,*/ async (Req, 
 });     
 
 // - ADD
-router.get('/add/contratista', /*isauth.isLoggedIn, isauth.isVip,*/ (Req, Res) => {
+router.get('/add/contratista', isauth.isLoggedIn, isauth.isVip,  (Req, Res) => {
     Res.render('admin/contratista/addcontratista');
 });
 
-router.post('/add/contratista', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, Res) => {
+router.post('/add/contratista', isauth.isLoggedIn, isauth.isVip, async (Req, Res) => {
     const promises  = [
         new Promise ((Resolve, Reject) => { pool.query('INSERT INTO contratista_nombre (nombre, apellido) VALUES (?, ?)', [Req.body.nombre, Req.body.apellido], (error, results) => {
             if (error) {
@@ -193,7 +193,7 @@ router.post('/add/contratista', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, 
 });
 
 // - EDIT
-router.get('/edit/contratista/:ID_CONT', /*isauth.isLoggedIn, isauth.isVip,*/ async (Req, Res) => {
+router.get('/edit/contratista/:ID_CONT', isauth.isLoggedIn, isauth.isVip,  async (Req, Res) => {
     const { ID_CONT } = Req.params;
     const  CONT = await pool.query('SELECT * FROM contratista WHERE ID_CONT = ?', [ID_CONT]);
     //Setear a CONT, asi no repetir las lineas de codigos como se mesutra abajo
@@ -343,7 +343,7 @@ router.get('/edit/contratista/:ID_CONT', /*isauth.isLoggedIn, isauth.isVip,*/ as
 });
 
 
-router.post('/edit/contratista/:ID_CONT', /*isauth.isLoggedIn, isauth.isVip,*/ async (Req, Res) => {
+router.post('/edit/contratista/:ID_CONT', isauth.isLoggedIn, isauth.isVip,  async (Req, Res) => {
     const { ID_CONT } = Req.params;
     const promises = [];
 
@@ -684,7 +684,7 @@ router.post('/edit/contratista/:ID_CONT', /*isauth.isLoggedIn, isauth.isVip,*/ a
     });
 });
 
-router.get('/delete/contratista/:ID_CONT', /*isauth.isLoggedIn, isauth.isVip,*/ (Req, Res) => {
+router.get('/delete/contratista/:ID_CONT', isauth.isLoggedIn, isauth.isVip,  (Req, Res) => {
     const { ID_CONT } = Req.params;
     pool.query('UPDATE contratista SET activo = 0 WHERE ID_CONT = ?', [ID_CONT], (error) => {
         if(error){

@@ -4,7 +4,7 @@ const pool     =  requires.pool;
 const isauth   =  requires.isauth;
 
 // -Lista-
-router.get('/allexpediente/',  /*isauth.isLoggedIn, isauth.isVip,*/ async (Req, Res) => { 
+router.get('/allexpediente/',  isauth.isLoggedIn, isauth.isVip, async (Req, Res) => { 
     const promises = [];
 
 
@@ -125,7 +125,7 @@ router.get('/allexpediente/',  /*isauth.isLoggedIn, isauth.isVip,*/ async (Req, 
 
 
 //-ADD
-router.get('/add/expediente', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, Res) => { 
+router.get('/add/expediente', isauth.isLoggedIn, isauth.isVip,async (Req, Res) => { 
     const promises = [];
 
 
@@ -134,9 +134,7 @@ router.get('/add/expediente', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, Re
                     if(error){
                         reject(error);
                     }else{
-                        if(results.length){
-                            resolve(results);
-                        }
+                        resolve(results);
                     }
                 });
 
@@ -164,6 +162,8 @@ router.get('/add/expediente', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, Re
                                             if(results.length){
                                                 element.cont_name = results[0].nombre + " " +  results[0].apellido;
                                                 resolve(true);
+                                            }else {
+                                                resolve();
                                             }
                                         }
                                     });
@@ -173,13 +173,17 @@ router.get('/add/expediente', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, Re
                     }else{
                         name_promises.push(
                             new Promise( (resolve, reject) => {
-                                pool.query('SELECT * FROM contratista_nombre WHERE ID_CONTN = ?', [results[0].ID_CONTN], (error, results) => {
+                                pool.query('SELECT * FROM contratista_nombre WHERE ID_CONTN = ?', [results[0].ID_CONTN], (error, res) => {
                                     if(error){
                                         reject(error);
                                     }else{
-                                        if(results.length){
-                                            results[0].cont_name = results[0].nombre + " " +  results[0].apellido;
-                                            resolve(results);
+                                        if(res.length){
+                                            results[0].cont_name = res[0].nombre + " " +  res[0].apellido;
+   
+                                            
+                                            resolve(true);
+                                        }else {
+                                            resolve();
                                         }
                                     }
                                 });
@@ -190,6 +194,8 @@ router.get('/add/expediente', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, Re
                     Promise.all(name_promises).then(() => {
                         resolve(results);
                     });
+                }else{
+                    resolve();
                 }
         })
     }));
@@ -218,7 +224,7 @@ router.get('/add/expediente', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, Re
     });
 });
 
-router.post('/add/expediente', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, Res) => { 
+router.post('/add/expediente', isauth.isLoggedIn, isauth.isVip,async (Req, Res) => { 
     if(
     Req.body.fecha_pedido != '' &&
     Req.body.fecha_contrato != '' &&
@@ -273,7 +279,6 @@ router.post('/add/expediente', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, R
     promises.push (new Promise( (resolve, reject) => {
         const year = new Date(Req.body.fecha_pedido).getFullYear();
         const month = new Date(Req.body.fecha_pedido).getMonth()+1;
-        console.log(month);
         var nro_orden;
         pool.query('SELECT * FROM `nro_orden` WHERE `anio_orden` = ? AND `mes_orden` = ? ORDER BY `ID_NRORD_AI` DESC;', [year, month], (error, results) => {
             if(error){
@@ -304,7 +309,6 @@ router.post('/add/expediente', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, R
     promises.push (new Promise( (resolve, reject) => {
         if(Req.body.ID_OFICINA === 'otro' && Req.body.otra_oficina != ''){
             if(Req.body.otra_oficina === '' || Req.body.otra_oficina === undefined) {
-                console.log("Bug");
                 reject('Es obligatoria la oficina'); 
                 Req.flash('error', 'Es obligatoria la oficina');
                 Res.redirect('/add/expediente');
@@ -337,7 +341,6 @@ router.post('/add/expediente', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, R
                 OBRA.ID_OFICINA = ID_FONDO;
             }   
 
-            console.log(OBRA);
 
 
             pool.query('INSERT INTO obra SET ?', [OBRA], (error, results) => {
@@ -365,12 +368,12 @@ router.post('/add/expediente', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, R
             informe_tecnico:Req.body.informe_tecnico,
             postpone_date:(Req.body.postpone_date === '')? null : Req.body.postpone_date,
             CUE:inst[0],
-            ID_EST:inst[1],
+            ID_EST: inst[1],
             ID_OBRA:IDS[2],
             ID_ESTADO:Req.body.ID_ESTADO
         }
-        console.log(EXP);
-        pool.query('INSERT INTO exp_con (ID_CONT, ID_EXP, presupuesto_entregado) VALUES (?, ?, ?)', [Req.body.contratista, IDS[0], Req.body.presupuesto_entregado]);
+
+        if(Req.body.contratista != null) { pool.query('INSERT INTO exp_con (ID_CONT, ID_EXP, presupuesto_entregado) VALUES (?, ?, ?)', [Req.body.contratista, IDS[0], Req.body.presupuesto_entregado]); }
         pool.query('INSERT INTO expediente SET ?', [EXP], (error, results) => {
             if(error){
                 throw error;
@@ -389,10 +392,10 @@ router.post('/add/expediente', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, R
 });
 
 //-EDIT-//
-router.get('/edit/expediente/:ID_EXP', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, Res) => { 
+router.get('/edit/expediente/:ID_EXP', isauth.isLoggedIn, isauth.isVip,async (Req, Res) => { 
     const promises = [];
     const ID_EXP = Req.params.ID_EXP;
-    console.log(ID_EXP);
+
 
     promises.push (new Promise( (resolve, reject) => {
                 pool.query('SELECT * FROM institucion WHERE activo = 1', (error, results) => {
@@ -532,7 +535,7 @@ router.get('/edit/expediente/:ID_EXP', /*isauth.isLoggedIn, isauth.isVip,*/async
 
         const EXP = values [3];
         Object.assign(EXP,  values [4]);
-        console.log(EXP);
+
 
 
         
@@ -540,7 +543,7 @@ router.get('/edit/expediente/:ID_EXP', /*isauth.isLoggedIn, isauth.isVip,*/async
     });
 });
 
-router.post('/edit/expediente/:ID_EXP', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, Res) => {
+router.post('/edit/expediente/:ID_EXP', isauth.isLoggedIn, isauth.isVip,async (Req, Res) => {
     if(
         Req.body.fecha_pedido != '' &&
         Req.body.fecha_contrato != '' &&
@@ -583,7 +586,7 @@ router.post('/edit/expediente/:ID_EXP', /*isauth.isLoggedIn, isauth.isVip,*/asyn
                 promises.push (new Promise( (resolve, reject) => {
                     if(Req.body.ID_OFICINA === 'otro' && Req.body.otra_oficina != ''){
                         if(Req.body.otra_oficina === '' || Req.body.otra_oficina === undefined) {
-                            console.log("Bug");
+
                             reject('Es obligatoria la oficina'); 
                             Req.flash('error', 'Es obligatoria la oficina');
                             Res.redirect('/add/expediente');
@@ -616,7 +619,7 @@ router.post('/edit/expediente/:ID_EXP', /*isauth.isLoggedIn, isauth.isVip,*/asyn
                             OBRA.ID_OFICINA = ID_FONDO;
                         }   
             
-                        console.log(OBRA);
+
             
             
                         pool.query('UPDATE obra SET ? WHERE ID_OBRA = ?', [OBRA, EXP.ID_OBRA], (error, results) => {
@@ -714,7 +717,7 @@ router.post('/edit/expediente/:ID_EXP', /*isauth.isLoggedIn, isauth.isVip,*/asyn
 });
 
 //-DELETE-//
-router.get('/delete/expediente/:ID_EXP', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, Res) => {
+router.get('/delete/expediente/:ID_EXP', isauth.isLoggedIn, isauth.isVip,async (Req, Res) => {
     const ID = Req.params.ID_EXP;
     pool.query('UPDATE expediente SET activo = 0 WHERE ID_EXP = ?', [ID], function(error) {
         if (error){ throw error; }

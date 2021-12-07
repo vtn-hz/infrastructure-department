@@ -131,7 +131,7 @@
     <label class="control-label">Institución:</label>
       </div>
        <div class="col-2">
-    <select class="form-control" name="inst" id="inst">
+    <select class="form-control" name="inst" id="inst" required>
         {{#each inst}}
         <option value="{{CUE}}###{{ID_EST}}">{{nombre_establecimiento}}</option>
         </div>
@@ -147,7 +147,7 @@
     <label  class="control-label" >Contratista:</label>
     </div>
      <div class="col-2">
-            <select class="form-control" name="contratista" id="contratista" required>
+        <select class="form-control" name="contratista" id="contratista" required>
         {{#each contratista}}
         <option value="{{ID_CONT}}">{{cont_name}}</option>
         {{/each}}

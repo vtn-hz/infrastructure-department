@@ -4,7 +4,7 @@ const pool     =  requires.pool;
 const isauth   =  requires.isauth;
 
 // -LIST
-router.get('/allinstitucion/', /*isauth.isLoggedIn, isauth.isVip,*/ async (Req, Res) => {
+router.get('/allinstitucion/', isauth.isLoggedIn, isauth.isVip, async (Req, Res) => {
     const promises = [];
 
     promises.push(
@@ -71,7 +71,7 @@ router.get('/allinstitucion/', /*isauth.isLoggedIn, isauth.isVip,*/ async (Req, 
 });
 
 // -ADD
-router.get('/add/institucion', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, Res) => {
+router.get('/add/institucion', isauth.isLoggedIn, isauth.isVip,async (Req, Res) => {
     pool.query('SELECT * FROM encargados',  async (error, results) => {
         if(error){
             throw error;
@@ -207,7 +207,7 @@ router.get('/add/institucion', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, R
     });
 });
 
-router.post('/add/institucion', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, Res) => { 
+router.post('/add/institucion', isauth.isLoggedIn, isauth.isVip,async (Req, Res) => { 
     pool.query('SELECT * FROM institucion WHERE CUE = ? OR ID_EST = ?', [Req.body.CUE, Req.body.ESTABLECIMIENTO], async (error, resu) => {
         if(!resu.length){ 
             const Promises = [
@@ -272,7 +272,7 @@ router.post('/add/institucion', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, 
 });
 
 //-EDIT-//
-router.get('/edit/institucion/:CUE/:ID_EST', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, Res) => {
+router.get('/edit/institucion/:CUE/:ID_EST', isauth.isLoggedIn, isauth.isVip,async (Req, Res) => {
     const { CUE, ID_EST } = Req.params;
     const promises = [];
 
@@ -386,7 +386,7 @@ router.get('/edit/institucion/:CUE/:ID_EST', /*isauth.isLoggedIn, isauth.isVip,*
                             }
                         })
                     });
-                    //Terminar
+
                     Resolve([values[0], values[1]]);
                 });
     })
@@ -465,13 +465,13 @@ router.get('/edit/institucion/:CUE/:ID_EST', /*isauth.isLoggedIn, isauth.isVip,*
         Object.assign(values[1], values[3]);
         Object.assign(values[1], values[4]);
 
-        console.log(values[1]);
+
         Res.render('admin/institucion/editinstitucion', {directores: values[0][0], inspectores: values[0][1],  institucion: values[1] })
     })
 
 });
 
-router.post('/edit/institucion/:CUE/:ID_EST', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, Res) => {
+router.post('/edit/institucion/:CUE/:ID_EST', isauth.isLoggedIn, isauth.isVip,async (Req, Res) => {
     //revisar
     const { CUE, ID_EST } = Req.params;
     const Promises = [];
@@ -663,7 +663,7 @@ router.post('/edit/institucion/:CUE/:ID_EST', /*isauth.isLoggedIn, isauth.isVip,
 });
 
 //-DELETE-//
-router.get('/delete/institucion/:CUE/:ID_EST', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, Res) => {
+router.get('/delete/institucion/:CUE/:ID_EST', isauth.isLoggedIn, isauth.isVip,async (Req, Res) => {
     const {CUE, ID_EST} = Req.params;
    
     pool.query('UPDATE `institucion` SET `activo` = 0 WHERE CUE=? AND ID_EST=?', [CUE, ID_EST], (error) => {
@@ -680,11 +680,11 @@ router.get('/delete/institucion/:CUE/:ID_EST', /*isauth.isLoggedIn, isauth.isVip
 
 
 //-Encargados-//
-router.get('/add/encargado', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, Res) => { 
+router.get('/add/encargado', isauth.isLoggedIn, isauth.isVip,async (Req, Res) => { 
     Res.render('admin/institucion/encargados/addencargado');
 });
  
-router.post('/add/encargado', /*isauth.isLoggedIn, isauth.isVip,*/async (Req, Res) => { 
+router.post('/add/encargado', isauth.isLoggedIn, isauth.isVip,async (Req, Res) => { 
     var ENC_TEL = {
         ID_ENCARGADO: 0,
         ID_TEL: 0  
