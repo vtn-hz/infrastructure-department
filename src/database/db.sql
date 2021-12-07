@@ -20,7 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `proyectoss_script_u`
 --
-
+CREATE DATABASE `proyectoss_script_u`;
+USE `proyectoss_script_u`;
 -- --------------------------------------------------------
 
 --
